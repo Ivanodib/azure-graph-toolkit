@@ -1,13 +1,15 @@
 import requests
 import json
 import logging
+import config
 from app_auth import get_access_token
+
 
 
 
 def get_user_id_from_upn (UPN, access_token ):
 
-    url = f'https://graph.microsoft.com/v1.0/users/{UPN}?$select=id'
+    url = f'{config.GRAPH_BASE_URL}/v1.0/users/{UPN}'  #?$select=id'
 
     headers = {
         'Authorization':f'Bearer {access_token}',
@@ -19,11 +21,16 @@ def get_user_id_from_upn (UPN, access_token ):
         response = requests.get(url, headers=headers)
         response.raise_for_status()
         response_data = json.loads(response.text)
-        user_id = response_data.get('id')    
+
+        user_id = response_data.get('id')
+        upn= response_data.get('userPrincipalName')
+        job = response_data.get('jobTitle')    
 
         return {
             'status_code': response.status_code,
-            'user_id': user_id
+            'id': user_id,
+            'upn': upn,
+            'job_title':job
         }
     except requests.exceptions.HTTPError as e:
         error_message = e.response.json().get('error', {}).get('message',str(e))
@@ -35,7 +42,7 @@ def get_user_id_from_upn (UPN, access_token ):
 
 def get_user_group_by_name (user_id,group_name,access_token):
 
-    url = f'https://graph.microsoft.com/v1.0/users/{user_id}/memberOf/microsoft.graph.group'
+    url = f'{config.GRAPH_BASE_URL}/v1.0/users/{user_id}/memberOf/microsoft.graph.group'
 
     params = {
         '$count': 'true',
@@ -58,8 +65,8 @@ def get_user_group_by_name (user_id,group_name,access_token):
             if group_name in group['displayName']:
                 return {
                     'status_code':result.status_code,
-                    'aad_group_id':group['id'],
-                    'aad_group_name':group['displayName']
+                    'group_id':group['id'],
+                    'group_name':group['displayName']
                 }
         return {
             'status_code':result.status_code,
@@ -73,4 +80,10 @@ def get_user_group_by_name (user_id,group_name,access_token):
             'error':error_message
         }
     
+def add_user_to_group(user_id, group_id, access_token):
+    return
 
+
+
+def remove_user_from_group(user_id, group_id, access_token):
+    return

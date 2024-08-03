@@ -1,5 +1,6 @@
 from msal import ConfidentialClientApplication
 from msal import SerializableTokenCache
+import config
 import os
 
 
@@ -17,7 +18,7 @@ def save_cache(cache):
 
 def get_access_token(tenant_id, client_id, client_secret):
 
-    auth_url = f'https://login.microsoftonline.com/{tenant_id}'
+    auth_url = f'{config.AUTH_BASE_URL}/{tenant_id}'
     scopes = ['https://graph.microsoft.com/.default']
 
     cache = load_cache()

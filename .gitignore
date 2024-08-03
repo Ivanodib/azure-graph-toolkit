@@ -5,6 +5,7 @@ __pycache__/
 
 # test file
 test.py
+token_cache.json
 
 # C extensions
 *.so
