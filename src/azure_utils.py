@@ -38,15 +38,15 @@ def get_user_group_by_name (user_id,group_name,access_token):
     url = f'https://graph.microsoft.com/v1.0/users/{user_id}/memberOf/microsoft.graph.group'
 
     params = {
-        '$count':'true',
-        '$search':f'"displayName:{group_name}"',
-        '$select':'displayName,id'
+        '$count': 'true',
+        '$search': f'"displayName:{group_name}"',
+        '$select': 'displayName,id'
     }
 
     headers = {
-        'Authorization':f'Bearer {access_token}',
-        'Content-type':'application/json',
-        'ConsistencyLevel':'eventual'
+        'Authorization': f'Bearer {access_token}',
+        'Content-type': 'application/json',
+        'ConsistencyLevel': 'eventual'
     }
 
     try:
@@ -63,7 +63,7 @@ def get_user_group_by_name (user_id,group_name,access_token):
                 }
         return {
             'status_code':result.status_code,
-            'error':f'No AAD group that contains {group_name} for user {user_id} found. Try another name'
+            'error':f'No AAD group that contains {group_name} for user {user_id} found. Try another name.'
         }
     except requests.exceptions.HTTPError as e: 
         error_message = e.response.json().get('error', {}).get('message',str(e))
@@ -74,4 +74,3 @@ def get_user_group_by_name (user_id,group_name,access_token):
         }
     
 
-    
