@@ -4,18 +4,19 @@ import logging
 import config
 from app_auth import get_access_token
 
+# TODO: da aggiungere in folder utils
+def update_header(access_token):
+    return{
+        'Authorization': f'Bearer {access_token}',
+        'Content-type': 'application/json',
+        'ConsistencyLevel': 'eventual'
+    }
 
-
-
-def get_user_id_from_upn (UPN, access_token ):
+def get_user_from_upn (UPN, access_token ):
 
     url = f'{config.GRAPH_BASE_URL}/v1.0/users/{UPN}'  #?$select=id'
 
-    headers = {
-        'Authorization':f'Bearer {access_token}',
-        'Content-type':'application/json',
-        'ConsistencyLevel':'eventual'
-    }
+    headers = update_header(access_token)
 
     try:
         response = requests.get(url, headers=headers)
@@ -50,14 +51,10 @@ def get_user_group_by_name (user_id,group_name,access_token):
         '$select': 'displayName,id'
     }
 
-    headers = {
-        'Authorization': f'Bearer {access_token}',
-        'Content-type': 'application/json',
-        'ConsistencyLevel': 'eventual'
-    }
+    header = update_header(access_token)
 
     try:
-        result = requests.get(url,headers=headers, params=params)
+        result = requests.get(url,headers=header, params=params)
         result.raise_for_status()
         groups_data = result.json()
 
@@ -82,7 +79,6 @@ def get_user_group_by_name (user_id,group_name,access_token):
     
 def add_user_to_group(user_id, group_id, access_token):
     return
-
 
 def remove_user_from_group(user_id, group_id, access_token):
     return
