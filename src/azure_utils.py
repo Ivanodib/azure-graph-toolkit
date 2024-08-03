@@ -84,6 +84,5 @@ def add_user_to_group(user_id, group_id, access_token):
     return
 
 
-
 def remove_user_from_group(user_id, group_id, access_token):
     return
