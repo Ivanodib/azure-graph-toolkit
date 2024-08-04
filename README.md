@@ -108,6 +108,8 @@ Here's why:
 | `Groups.ReadWrite.All` | To add/remove user from Azure AD Group |
 | `User.Read.All` | To read user information |
 
+<br>
+
 ### Installation
 
 1. Install azure-graph-helper library from PyPi 
@@ -140,6 +142,7 @@ App authentication and authorization. Once get the access token is possible to i
    access_token = app_auth.get_access_token(tenant_id, client_id, client_secret)
    ```
 
+<br>
 
 **Add user to group:**
 ```python
@@ -149,6 +152,8 @@ App authentication and authorization. Once get the access token is possible to i
                                            access_token)
    print(result)
  ```
+
+<br>
 
  **Remove user from group:**
 ```python
@@ -160,7 +165,7 @@ App authentication and authorization. Once get the access token is possible to i
  ```
 
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+<!--_For more examples, please refer to the [Documentation](https://example.com)_ -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
