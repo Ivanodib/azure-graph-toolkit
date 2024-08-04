@@ -2,8 +2,6 @@ import requests
 import json
 import logging
 import config
-from app_auth import get_access_token
-
 
 logging.basicConfig(level=logging.ERROR)
 
@@ -21,7 +19,7 @@ def is_user_in_group():
 
 def get_group_by_name(group_name, access_token):
 
-    url = f'{config.GRAPH_BASE_URL}/groups/'
+    url = f'{config.GRAPH_BASE_URL_GROUP}/'
 
     params = {
         '$count': 'true',
@@ -87,7 +85,7 @@ def get_group_by_name(group_name, access_token):
 
 def get_user_from_upn (UPN, access_token ):
 
-    url = f'{config.GRAPH_BASE_URL}/users/{UPN}' 
+    url = f'{config.GRAPH_BASE_URL_USER}/{UPN}' 
 
     headers = get_http_header(access_token)
 
@@ -122,7 +120,7 @@ def get_user_from_upn (UPN, access_token ):
 
 def get_user_group_by_name (user_id,group_name,access_token):
 
-    url = f'{config.GRAPH_BASE_URL}/users/{user_id}/memberOf/microsoft.graph.group'
+    url = f'{config.GRAPH_BASE_URL_USER}/{user_id}/memberOf/microsoft.graph.group'
 
     params = {
         '$count': 'true',
@@ -181,9 +179,7 @@ def add_user_to_group(user_upn, group_name, access_token):
     group_name = response_user_group.get('group_name')
 
 
-
-    url = f'{config.GRAPH_BASE_URL}/groups/{group_id}/members/$ref'
-
+    url = f'{config.GRAPH_BASE_URL_GROUP}/{group_id}/members/$ref'
     payload = {
         '@odata.id': f'{config.GRAPH_BASE_URL}/directoryObjects/{user_id}'
     }
@@ -229,7 +225,7 @@ def remove_user_from_group(user_upn, group_name, access_token):
     group_id = response_user_group.get('group_id')
     group_name = response_user_group.get('group_name')
 
-    url = f'{config.GRAPH_BASE_URL}/groups/{group_id}/members/{user_id}/$ref'
+    url = f'{config.GRAPH_BASE_URL_GROUP}/{group_id}/members/{user_id}/$ref'
     headers = get_http_header(access_token)
     try:
         
