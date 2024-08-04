@@ -144,24 +144,48 @@ App authentication and authorization. Once get the access token is possible to i
 
 <br>
 
-**Add user to group:**
+**Example - Add user to AAD group:**
 ```python
 
    result = azure_utils.add_user_to_group('mario.rossi@domain.com',
                                           'usb-unlock-group',
                                            access_token)
    print(result)
- ```
 
+
+ ```
+ Example Output
+ ```python
+ {'status_code': 204, 'message': 'Success. User mario.rossi@domain.com added to AAD group usb-unlock-group.'}
+ 
+ ```
+ ```python
+ {'status_code': 200, 'error': 'No AAD group name that contains usb-unlock-group found. Try another name.'}
+ ```
+<br>
 <br>
 
- **Remove user from group:**
+ **Example - Remove user from group:**
 ```python
 
    result = azure_utils.remove_user_from_group('mario.rossi@domain.com',
                                           'usb-unlock-group',
                                            access_token)
    print(result)
+ ```
+ <br>
+
+ **Error handling**<br>
+ You can check 'error' key presence in JSON the response: 
+```python
+
+   result = azure_utils.remove_user_from_group('mario.rossi@domain.com',
+                                          'usb-unlock-group',
+                                           access_token)
+
+    if 'error' in result:
+        doSomething()
+   
  ```
 
 
