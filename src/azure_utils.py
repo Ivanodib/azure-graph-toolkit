@@ -12,9 +12,12 @@ def update_header(access_token):
         'ConsistencyLevel': 'eventual'
     }
 
+def is_user_in_group():
+    return
+
 def get_user_from_upn (UPN, access_token ):
 
-    url = f'{config.GRAPH_BASE_URL}/v1.0/users/{UPN}'  #?$select=id'
+    url = f'{config.GRAPH_BASE_URL}/users/{UPN}' 
 
     headers = update_header(access_token)
 
@@ -43,7 +46,7 @@ def get_user_from_upn (UPN, access_token ):
 
 def get_user_group_by_name (user_id,group_name,access_token):
 
-    url = f'{config.GRAPH_BASE_URL}/v1.0/users/{user_id}/memberOf/microsoft.graph.group'
+    url = f'{config.GRAPH_BASE_URL}/users/{user_id}/memberOf/microsoft.graph.group'
 
     params = {
         '$count': 'true',
@@ -78,7 +81,30 @@ def get_user_group_by_name (user_id,group_name,access_token):
         }
     
 def add_user_to_group(user_id, group_id, access_token):
-    return
+
+    url = f'{config.GRAPH_BASE_URL}/groups/{group_id}/members/$ref'
+
+    payload = {
+        '@odata.id': f'{config.GRAPH_BASE_URL}/directoryObjects/{user_id}'
+    }
+    headers = update_header(access_token)
+
+    try:
+        response = requests.post(url, headers=headers, json=payload)
+        response.raise_for_status()
+
+        return {
+            'status_code':response.status_code,
+            'message': f'Success. User {user_id} added to AAD group {group_id}.'
+        }
+    
+    except requests.exceptions.HTTPError as e:
+        error_message = e.response.json().get('error', {}).get('message',str(e))
+        logging.error(f'Error: {error_message}.')
+        return {
+            'status_code': e.response.status_code,
+            'error':error_message
+        }
 
 def remove_user_from_group(user_id, group_id, access_token):
     return
