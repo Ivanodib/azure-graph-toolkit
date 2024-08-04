@@ -4,6 +4,9 @@ import logging
 import config
 from app_auth import get_access_token
 
+
+logging.basicConfig(level=logging.ERROR)
+
 # TODO: da aggiungere in folder utils
 def update_header(access_token):
     return{
@@ -43,6 +46,12 @@ def get_user_from_upn (UPN, access_token ):
             'status_code': e.response.status_code,
             'error':error_message
         }
+    except requests.exceptions.RequestException as e:
+        logging.error(f'Request failed: {e}')
+        return {
+            'status_code': None,
+            'error': str(e)
+        }
 
 def get_user_group_by_name (user_id,group_name,access_token):
 
@@ -79,6 +88,12 @@ def get_user_group_by_name (user_id,group_name,access_token):
             'status_code': e.response.status_code,
             'error':error_message
         }
+    except requests.exceptions.RequestException as e:
+        logging.error(f'Request failed: {e}')
+        return {
+            'status_code': None,
+            'error': str(e)
+        }
     
 def add_user_to_group(user_id, group_id, access_token):
 
@@ -104,6 +119,12 @@ def add_user_to_group(user_id, group_id, access_token):
         return {
             'status_code': e.response.status_code,
             'error':error_message
+        }
+    except requests.exceptions.RequestException as e:
+        logging.error(f'Request failed: {e}')
+        return {
+            'status_code': None,
+            'error': str(e)
         }
 
 def remove_user_from_group(user_id, group_id, access_token):
