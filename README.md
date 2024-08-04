@@ -148,28 +148,20 @@ App authentication and authorization. Once get the access token is possible to i
 ```python
 
    result = azure_utils.add_user_to_group('mario.rossi@domain.com',
-                                          'usb-unlock-group',
+                                          'block-usb-group',
                                            access_token)
    print(result)
 
 
  ```
- Example Output
- ```python
- {'status_code': 204, 'message': 'Success. User mario.rossi@domain.com added to AAD group usb-unlock-group.'}
- 
- ```
- ```python
- {'status_code': 200, 'error': 'No AAD group name that contains usb-unlock-group found. Try another name.'}
- ```
-<br>
+
 <br>
 
  **Example - Remove user from group:**
 ```python
 
    result = azure_utils.remove_user_from_group('mario.rossi@domain.com',
-                                          'usb-unlock-group',
+                                          'block-usb-group',
                                            access_token)
    print(result)
  ```
@@ -180,12 +172,22 @@ App authentication and authorization. Once get the access token is possible to i
 ```python
 
    result = azure_utils.remove_user_from_group('mario.rossi@domain.com',
-                                          'usb-unlock-group',
+                                          'block-usb-group',
                                            access_token)
 
     if 'error' in result:
         doSomething()
    
+ ```
+<br>
+
+  Example Output
+ ```python
+ {'status_code': 204, 'message': 'Success. User mario.rossi@domain.com added to AAD group block-usb-group.'}
+ 
+ ```
+ ```python
+ {'status_code': 200, 'error': 'No AAD group name that contains block-usb-group found. Try another name.'}
  ```
 
 
