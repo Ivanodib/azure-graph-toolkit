@@ -143,6 +143,7 @@ App authentication and authorization. Once get the access token is possible to i
    ```
 
 <br>
+<br>
 
 **Example - Add user to AAD group:**
 ```python
@@ -155,7 +156,7 @@ App authentication and authorization. Once get the access token is possible to i
 
  ```
 
-<br>
+<br><br>
 
  **Example - Remove user from group:**
 ```python
@@ -165,7 +166,7 @@ App authentication and authorization. Once get the access token is possible to i
                                            access_token)
    print(result)
  ```
- <br>
+ <br><br>
 
  **Error handling**<br>
  You can check 'error' key presence in JSON response: 
