@@ -102,8 +102,8 @@ def add_user_to_group(user_id, group_id, access_token):
     payload = {
         '@odata.id': f'{config.GRAPH_BASE_URL}/directoryObjects/{user_id}'
     }
-    headers = update_header(access_token)
 
+    headers = update_header(access_token)
     try:
         response = requests.post(url, headers=headers, json=payload)
         response.raise_for_status()
@@ -128,4 +128,29 @@ def add_user_to_group(user_id, group_id, access_token):
         }
 
 def remove_user_from_group(user_id, group_id, access_token):
-    return
+
+    url = f'{config.GRAPH_BASE_URL}/groups/{group_id}/members/{user_id}/$ref'
+    headers = update_header(access_token)
+    try:
+        
+        response = requests.delete(url, headers=headers)
+        response.raise_for_status()
+
+        return {
+            'status_code':response.status_code,
+            'message': f'Success. User {user_id} removed from AAD group {group_id}.'
+        }
+
+    except requests.exceptions.HTTPError as e:
+        error_message = e.response.json().get('error', {}).get('message',str(e))
+        logging.error(f'Error: {error_message}.')
+        return {
+            'status_code': e.response.status_code,
+            'error':error_message
+        }
+    except requests.exceptions.RequestException as e:
+        logging.error(f'Request failed: {e}')
+        return {
+            'status_code': None,
+            'error': str(e)
+        }
