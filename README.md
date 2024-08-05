@@ -41,13 +41,13 @@
   <p align="center">
     A Python library to manage Azure AD (Entra ID) user groups easily through Graph API.
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <a href=https://github.com/Ivanodib/azure-graph-helper><strong>Explore the docs »</strong></a>
     <br />
     <br />
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/Ivanodib/azure-graph-helper/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/Ivanodib/azure-graph-helper/issues">Request Feature</a>
   </p>
 </div>
 
@@ -202,10 +202,9 @@ App authentication and authorization. Once get the access token is possible to i
 ## Roadmap
 
 - [ ] Add an orchestrator to move users into groups temporarily
-- [ ] Add module to reset user credential and MFA methods
-- [ ] Add module to block/delete user
-- [ ] Add module to manage Entra ID devices
-- [ ] Add Intune modules to manage MDM joined devices
+- [ ] Add module to manage user credentials
+- [ ] Add module to manage Entra ID registered devices
+- [ ] Add modules to manage Intune MDM joined devices
 
 <!-- See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues). -->
 
