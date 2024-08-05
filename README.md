@@ -105,7 +105,7 @@ Here's why:
 
 | Role | Description |
 | --- | --- |
-| `Groups.ReadWrite.All` | To add/remove user from Azure AD Group |
+| `GroupMember.ReadWrite.All` | To add/remove user from Azure AD Group |
 | `User.Read.All` | To read user information |
 
 <br>
