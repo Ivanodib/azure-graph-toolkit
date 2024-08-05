@@ -139,7 +139,7 @@ App authentication and authorization. Once get the access token is possible to i
    client_id = '<client (App) Id>'
    client_secret = '<client secret>'
 
-   access_token = app_auth.get_access_token(tenant_id, client_id, client_secret)
+   access_token = graph_auth.get_access_token(tenant_id, client_id, client_secret)
    ```
 
 <br>
@@ -148,7 +148,7 @@ App authentication and authorization. Once get the access token is possible to i
 **Example - Add user to AAD group:**
 ```python
 
-   result = azure_utils.add_user_to_group('mario.rossi@domain.com',
+   result = graph_utils.add_user_to_group('mario.rossi@domain.com',
                                           'block-usb-group',
                                            access_token)
    print(result)
@@ -161,7 +161,7 @@ App authentication and authorization. Once get the access token is possible to i
  **Example - Remove user from group:**
 ```python
 
-   result = azure_utils.remove_user_from_group('mario.rossi@domain.com',
+   result = graph_utils.remove_user_from_group('mario.rossi@domain.com',
                                           'block-usb-group',
                                            access_token)
    print(result)
@@ -172,7 +172,7 @@ App authentication and authorization. Once get the access token is possible to i
  Verify 'error' key presence in JSON response: 
 ```python
 
-   result = azure_utils.remove_user_from_group('mario.rossi@domain.com',
+   result = graph_utils.remove_user_from_group('mario.rossi@domain.com',
                                           'block-usb-group',
                                            access_token)
 
