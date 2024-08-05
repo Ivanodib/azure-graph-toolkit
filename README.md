@@ -99,7 +99,7 @@ There are many great azure libraries available on GitHub; however, I didn't find
 
 ### Prerequisites
 
-1. Python version >= 3.8
+1. Python >= 3.6
 2. Azure AD App Registration with the following role assigned *(App delegation)*:
 
 
