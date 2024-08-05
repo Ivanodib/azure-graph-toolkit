@@ -1,6 +1,5 @@
 from msal import ConfidentialClientApplication
 import config
-import os
 
 
 def get_access_token(tenant_id, client_id, client_secret):

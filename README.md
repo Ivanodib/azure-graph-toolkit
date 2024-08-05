@@ -129,7 +129,7 @@ There are many great azure libraries available on GitHub; however, I didn't find
 Import library modules
 
 ```python
-   from azure_graph_helper import app_auth, azure_utils
+   from azure_graph_helper import graph_auth, graph_utils
    ```
 
 App authentication and authorization. Once get the access token is possible to interact with Azure AD Graph API.
