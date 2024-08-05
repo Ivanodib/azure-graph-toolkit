@@ -5,7 +5,6 @@ import config
 
 logging.basicConfig(level=logging.ERROR)
 
-# TODO: da aggiungere in folder utils
 def get_http_header(access_token):
 
     return{
