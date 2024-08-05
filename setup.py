@@ -12,11 +12,10 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Ivanodib/azure-graph-helper",
-    package_dir={"": "azure-graph-helper"},
+    packages=find_packages(),   
     install_requires=[
         "msal",
     ],
-    packages=find_packages(),
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.6",
