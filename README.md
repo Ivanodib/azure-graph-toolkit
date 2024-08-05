@@ -169,7 +169,7 @@ App authentication and authorization. Once get the access token is possible to i
  <br><br>
 
  **Error handling**<br>
- You can check 'error' key presence in JSON response: 
+ Verify 'error' key presence in JSON response: 
 ```python
 
    result = azure_utils.remove_user_from_group('mario.rossi@domain.com',
