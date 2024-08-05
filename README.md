@@ -106,6 +106,7 @@ Here's why:
 | Least privilege role | Description |
 | --- | --- |
 | `GroupMember.ReadWrite.All` | To add/remove user from Azure AD Group |
+| `GroupMember.Read.All` | List all the groups available in an organization, excluding dynamic distribution groups. |
 | `User.Read.All` | To read user information |
 
 <br>
