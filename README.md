@@ -103,11 +103,11 @@ Here's why:
 2. Azure AD App Registration with the following role assigned *(App delegation)*:
 
 
-| Least privilege role | Description |
+| Least privilege role | Type | Description |
 | --- | --- |
-| `GroupMember.ReadWrite.All` | To add/remove user from Azure AD Group |
-| `GroupMember.Read.All` | List all the groups available in an organization, excluding dynamic distribution groups. |
-| `User.Read.All` | To read user information |
+| `GroupMember.ReadWrite.All` | App delegation | To add/remove user from Azure AD Group |
+| `GroupMember.Read.All` | App delegation | List all the groups available in an organization, excluding dynamic distribution groups. |
+| `User.Read.All` | App delegation | To read user information |
 
 <br>
 
