@@ -85,9 +85,9 @@
 ## About The Project
 There are many great azure libraries available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one.
 
-Here's why:
-* Help IT foolks to add/remove user from Azure AD security groups. 
-* Get user and groups informations.
+<!-- Here's why:
+* Automate Sysadmin daily task
+* Get user and groups informations. -->
 
 <br>
 <br>
