@@ -41,7 +41,7 @@
   <p align="center">
     A Python library to manage Azure AD (Entra ID) user groups easily through Graph API.
     <br />
-    <a href=https://github.com/Ivanodib/azure-graph-helper><strong>Explore the docs »</strong></a>
+    <a href=https://github.com/Ivanodib/azure-graph-helper><strong>Explore the docs (work in progress)»</strong></a>
     <br />
     <br />
     ·
