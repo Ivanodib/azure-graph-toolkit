@@ -148,8 +148,8 @@ App authentication and authorization. Once get the access token is possible to i
 ```python
 
    result = graph_utils.remove_user_from_group('mario.rossi@domain.com',
-                                          'block-usb-group',
-                                           access_token)
+                                               'block-usb-group',
+                                                access_token)
 
     if 'error' in result:
         doSomething()
