@@ -117,7 +117,7 @@ There are many great azure libraries available on GitHub; however, I didn't find
    ```sh
     pip install azure-graph-helper
     ```
-2. Ready to use :)
+2. Profit :)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
