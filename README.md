@@ -11,18 +11,18 @@
      <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>-->
 
-  <h1 align="center">azure-graph-helper</h1>
+  <h1 align="center">azure-graph-toolkit</h1>
 
   <p align="center">
     A Python library to manage Azure AD (Entra ID) user groups easily through Graph API.
     <br />
-    <a href=https://github.com/Ivanodib/azure-graph-helper><strong>Explore the docs (work in progress)»</strong></a>
+    <a href=https://github.com/Ivanodib/azure-graph-toolkit><strong>Explore the docs (work in progress)»</strong></a>
     <br />
     <br />
     ·
-    <a href="https://github.com/Ivanodib/azure-graph-helper/issues">Report Bug</a>
+    <a href="https://github.com/Ivanodib/azure-graph-toolkit/issues">Report Bug</a>
     ·
-    <a href="https://github.com/Ivanodib/azure-graph-helper/issues">Request Feature</a>
+    <a href="https://github.com/Ivanodib/azure-graph-toolkit/issues">Request Feature</a>
   </p>
 </div>
 
@@ -74,7 +74,7 @@ There are many great Azure libraries available on GitHub; however, I didn't find
 
 ### Prerequisites
 
-1. Python >= 3.6
+1. Python >= 3.4
 2. Azure AD App Registration with the following role assigned *(App delegation)*:
 
 
@@ -88,9 +88,9 @@ There are many great Azure libraries available on GitHub; however, I didn't find
 
 ### Installation
 
-1. Install azure-graph-helper library from PyPi 
+1. Install azure-graph-toolkit library from PyPi 
    ```sh
-    pip install azure-graph-helper
+    pip install azure-graph-toolkit
     ```
 2. Profit :)
 
@@ -104,7 +104,7 @@ There are many great Azure libraries available on GitHub; however, I didn't find
 Import library modules
 
 ```python
-   from azure_graph_helper import graph_auth, graph_utils
+   from azure_graph_toolkit import graph_auth, graph_utils
    ```
 
 App authentication and authorization. Once get the access token is possible to interact with Azure AD Graph API.
@@ -144,7 +144,7 @@ App authentication and authorization. Once get the access token is possible to i
  <br>
 
  **Error handling**<br>
- Verify 'error' key presence in JSON response: 
+ This library handles exceptions for you. Just verify the presence of the 'error' key in the JSON response: 
 ```python
 
    result = graph_utils.remove_user_from_group('mario.rossi@domain.com',
