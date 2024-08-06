@@ -1,22 +1,40 @@
-from msal import ConfidentialClientApplication
-import config
-
+from azure_graph_helper import config
+import requests
+import logging
 
 def get_access_token(tenant_id, client_id, client_secret):
 
-    auth_url = f'{config.AUTH_BASE_URL}/{tenant_id}'
-    scopes = ['https://graph.microsoft.com/.default']
+    auth_url = f'{config.AUTH_BASE_URL}/{tenant_id}/oauth2/v2.0/token'
+    scope = {config.GRAPH_SCOPE}
 
-    app = ConfidentialClientApplication(
+    header = {
+        'Content-type': 'application/x-www-form-urlencoded'
+    }
 
-        client_id=client_id,
-        client_credential=client_secret,
-        authority=auth_url
-    )
-    
-    result = app.acquire_token_for_client(scopes=scopes)
-    return result.get('access_token')
+    data = {
+        'client_id': client_id,
+        'client_secret': client_secret,
+        'grant_type': 'client_credentials',
+        'scope': scope
+    }
 
+    try:
+        response = requests.post(auth_url,headers=header, data=data)
+        response.raise_for_status()
+        token = response.json()["access_token"]
+        return token
 
-
+    except requests.exceptions.HTTPError as e:
+        error_message = e.response.text
+        logging.error(f'Error: {error_message}.')
+        return {
+            'status_code': e.response.status_code,
+            'error':error_message
+        }
+    except requests.exceptions.RequestException as e:
+        logging.error(f'Request failed: {e}')
+        return {
+            'status_code': None,
+            'error': str(e)
+        } 
     
