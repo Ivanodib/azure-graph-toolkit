@@ -120,7 +120,7 @@ App authentication and authorization. Once get the access token is possible to i
 <br>
 
 
-**Example - Add user to AAD group:**
+**Add user to AAD group:**
 ```python
 
    result = graph_utils.add_user_to_group('mario.rossi@domain.com',
@@ -133,7 +133,7 @@ App authentication and authorization. Once get the access token is possible to i
 
 <br>
 
- **Example - Remove user from group:**
+ **Remove user from group:**
 ```python
 
    result = graph_utils.remove_user_from_group('mario.rossi@domain.com',
