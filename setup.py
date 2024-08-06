@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="azure-graph-toolkit",
-    version="1.0",
+    version="1.0.1",
     author="Ivano Dibenedetto",
     author_email="ivano.dibenedetto7@gmail.com",
     description="Python library to manage Azure AD (Entra ID) user groups easily through Graph API.",
