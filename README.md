@@ -90,7 +90,7 @@ There are many great Azure libraries available on GitHub; however, I didn't find
 
 1. Install azure-graph-toolkit library from PyPi 
    ```sh
-    pip install azure-graph-toolkit
+   pip install azure-graph-toolkit
     ```
 2. Profit 😁
 
