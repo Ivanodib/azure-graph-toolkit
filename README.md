@@ -123,9 +123,7 @@ App authentication and authorization. Once get the access token is possible to i
 **Add user to AAD group:**
 ```python
 
-result = graph_utils.add_user_to_group('mario.rossi@domain.com',
-                                          'block-usb-group',
-                                           access_token)
+result = graph_utils.add_user_to_group('mario.rossi@domain.com', 'block-usb-group', access_token)
 print(result)
 
 
@@ -136,9 +134,7 @@ print(result)
  **Remove user from AAD group:**
 ```python
 
-result = graph_utils.remove_user_from_group('mario.rossi@domain.com',
-                                               'block-usb-group',
-                                                access_token)
+result = graph_utils.remove_user_from_group('mario.rossi@domain.com', 'block-usb-group', access_token)
 print(result)
  ```
  <br>
@@ -147,9 +143,7 @@ print(result)
  This library handles exceptions for you. Just verify the presence of the 'error' key in the JSON response: 
 ```python
 
-result = graph_utils.remove_user_from_group('mario.rossi@domain.com',
-                                               'block-usb-group',
-                                                access_token)
+result = graph_utils.remove_user_from_group('mario.rossi@domain.com', 'block-usb-group', access_token)
 
 if 'error' in result:
   doSomething()
