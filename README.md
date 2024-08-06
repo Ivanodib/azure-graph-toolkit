@@ -133,7 +133,7 @@ App authentication and authorization. Once get the access token is possible to i
 
 <br>
 
- **Remove user from group:**
+ **Remove user from AAD group:**
 ```python
 
    result = graph_utils.remove_user_from_group('mario.rossi@domain.com',
