@@ -5,7 +5,16 @@ from . import config
 
 logging.basicConfig(level=logging.ERROR)
 
-def get_http_header(access_token):
+def get_http_header(access_token:str) -> dict:
+
+    """
+    Return common http header with access token updated.
+
+    Args:
+        access_token (str): Graph API access token.
+
+    Returns:
+        dict: A dictionary containing the HTTP header with new access token."""
 
     return{
         'Authorization': f'Bearer {access_token}',
@@ -13,7 +22,18 @@ def get_http_header(access_token):
         'ConsistencyLevel': 'eventual'
     }
 
-def get_group_by_name(group_name, access_token):
+def get_group_by_name(group_name:str, access_token:str) -> dict :
+    
+    """
+    Gets Azure AD group information by name.
+
+    Args:
+        group_name (str): The group name to find. This could be a substring of the group name. 
+        access_token (str): The Graph API access token.
+
+    Returns:
+        dict: A dictionary containings the group id and group name."""
+
 
     url = f'{config.GRAPH_BASE_URL_GROUP}/'
 
@@ -78,7 +98,18 @@ def get_group_by_name(group_name, access_token):
             'error': str(e)
         } 
 
-def get_user_from_upn (UPN, access_token ):
+def get_user_from_upn (UPN:str, access_token:str ) -> dict:
+
+    """
+    Gets AAD user Id from User Principal Name (UPN).
+
+    Args:
+        user_upn (str): User principal name to find. 
+        access_token (str): Graph API access token.
+
+    Returns:
+        dict: A dictionary containing status_code, id, job_title ."""
+
 
     url = f'{config.GRAPH_BASE_URL_USER}/{UPN}' 
 
@@ -113,7 +144,7 @@ def get_user_from_upn (UPN, access_token ):
             'error': str(e)
         }
 
-def get_user_group_by_name (user_id,group_name,access_token):
+def get_user_group_by_name (user_id:str,group_name:str,access_token:str) -> dict: 
 
     url = f'{config.GRAPH_BASE_URL_USER}/{user_id}/memberOf/microsoft.graph.group'
 
@@ -155,7 +186,18 @@ def get_user_group_by_name (user_id,group_name,access_token):
             'error': str(e)
         }
     
-def add_user_to_group(user_upn, group_name, access_token):
+def add_user_to_group(user_upn:str, group_name:str, access_token:str) -> dict:
+
+    """
+    Adds user to Azure AD group.
+
+    Args:
+        user_upn (str): The User principal name to find.
+        group_name (str): The group to find. This could be a substring of the group name.  
+        access_token (str): The Graph API access token.
+
+    Returns:
+        dict: A dictionary containing the status code, id, job_title ."""
 
     # Get user Id from UPN
     response_user_info = get_user_from_upn(user_upn, access_token)
@@ -203,7 +245,18 @@ def add_user_to_group(user_upn, group_name, access_token):
             'error': str(e)
         }
 
-def remove_user_from_group(user_upn, group_name, access_token):
+def remove_user_from_group(user_upn:str, group_name:str, access_token:str) -> dict:
+
+    """
+    Adds user to Azure AD group.
+
+    Args:
+        user_upn (str): The User principal name to find.
+        group_name (str): The group to find. This could be a substring of the group name.  
+        access_token (str): The Graph API access token.
+
+    Returns:
+        dict: A dictionary containing the status code and graph result  ."""
 
     response_user_info = get_user_from_upn(user_upn, access_token)
 

@@ -2,7 +2,7 @@ from . import config
 import requests
 import logging
 
-def get_access_token(tenant_id, client_id, client_secret):
+def get_access_token(tenant_id:str, client_id:str, client_secret:str):
 
     auth_url = f'{config.AUTH_BASE_URL}/{tenant_id}/oauth2/v2.0/token'
     scope = {config.GRAPH_SCOPE}
