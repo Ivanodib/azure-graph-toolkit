@@ -1,4 +1,4 @@
-from azure_graph_helper import config
+from . import config
 import requests
 import logging
 

@@ -1,7 +1,7 @@
 import requests
 import json
 import logging
-import config
+from . import config
 
 logging.basicConfig(level=logging.ERROR)
 
@@ -12,9 +12,6 @@ def get_http_header(access_token):
         'Content-type': 'application/json',
         'ConsistencyLevel': 'eventual'
     }
-
-def is_user_in_group():
-    return
 
 def get_group_by_name(group_name, access_token):
 
@@ -33,7 +30,6 @@ def get_group_by_name(group_name, access_token):
         respone_group_info.raise_for_status()
         groups_data = respone_group_info.json()
 
-        # Nessun gruppo trovato
         if groups_data['@odata.count'] == 0:  
             return {
                 'status_code':respone_group_info.status_code,
@@ -51,14 +47,14 @@ def get_group_by_name(group_name, access_token):
                         'group_id':group['id'],
                         'group_name':group['displayName']
                     }
-            # Diversi gruppi che contengono la substring
+           
             if count_match_name > 1:
                 return {
                     'status_code': respone_group_info.status_code,
                     'error':f'Too much AAD group that contains {group_name} found. Try another name.'
                 }
             
-            # Singolo gruppo AAD trovato
+
             elif count_match_name == 1:
                 return data
             else:

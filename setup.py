@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="azure-graph-helper",
-    version="1.0.1.0",
+    version="1.0.1.1",
     author="Ivano Dibenedetto",
     author_email="ivano.dibenedetto7@gmail.com",
     description="Python library to manage Azure AD (Entra ID) user groups easily through Graph API.",
@@ -18,12 +18,7 @@ setup(
     ],
     classifiers=[
         "License :: OSI Approved :: MIT License",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3",
+        "Operating System :: OS Independent",
     ],
 )
