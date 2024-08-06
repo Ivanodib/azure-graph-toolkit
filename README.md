@@ -3,23 +3,6 @@
 <a id="readme-top"></a>
 
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -135,7 +118,7 @@ App authentication and authorization. Once get the access token is possible to i
    ```
 
 <br>
-<br>
+
 
 **Example - Add user to AAD group:**
 ```python
@@ -148,7 +131,7 @@ App authentication and authorization. Once get the access token is possible to i
 
  ```
 
-<br><br>
+<br>
 
  **Example - Remove user from group:**
 ```python
@@ -158,7 +141,7 @@ App authentication and authorization. Once get the access token is possible to i
                                            access_token)
    print(result)
  ```
- <br><br>
+ <br>
 
  **Error handling**<br>
  Verify 'error' key presence in JSON response: 
@@ -203,10 +186,8 @@ App authentication and authorization. Once get the access token is possible to i
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
 <!-- CONTRIBUTING -->
 ## Contributing
-
 Any contributions you make are **greatly appreciated**.
 
 <br>
@@ -215,7 +196,6 @@ Any contributions you make are **greatly appreciated**.
 
 <!-- CONTACT -->
 ## Contact
-
 Ivano Dibenedetto - [@Linkedin](https://www.linkedin.com/in/ivano-dibenedetto-b526ab188/) - ivano.dibenedetto7@gmail.com
 
 Project Link: [https://github.com/Ivanodib/azure-graph-helper](https://github.com/Ivanodib/azure-graph-helper)
