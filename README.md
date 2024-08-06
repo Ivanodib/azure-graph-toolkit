@@ -99,7 +99,7 @@ There are many great Azure libraries available on GitHub; however, I didn't find
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
+### Usage
 
 Import library modules
 
@@ -110,11 +110,11 @@ Import library modules
 App authentication and authorization. Once get the access token is possible to interact with Azure AD Graph API.
 ```python
 
-   tenant_id = '<tenant Id>'
-   client_id = '<client (App) Id>'
-   client_secret = '<client secret>'
+tenant_id = '<tenant Id>'
+client_id = '<client (App) Id>'
+client_secret = '<client secret>'
 
-   access_token = graph_auth.get_access_token(tenant_id, client_id, client_secret)
+access_token = graph_auth.get_access_token(tenant_id, client_id, client_secret)
    ```
 
 <br>
