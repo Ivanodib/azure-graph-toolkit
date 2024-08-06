@@ -92,7 +92,7 @@ There are many great Azure libraries available on GitHub; however, I didn't find
    ```sh
     pip install azure-graph-toolkit
     ```
-2. Profit :)
+2. Profit 😁
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
