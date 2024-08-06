@@ -58,7 +58,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-There are many great azure libraries available on GitHub; however, I didn't find one that really suited my needs so I created this one.
+There are many great Azure libraries available on GitHub; however, I didn't find one that really suited my needs, so I created this one to simplify and automate daily tasks.
 
 <!-- Here's why:
 * Automate Sysadmin daily task
