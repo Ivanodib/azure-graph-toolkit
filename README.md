@@ -176,10 +176,10 @@ App authentication and authorization. Once get the access token is possible to i
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Add an orchestrator to move users into groups temporarily
+- [ ] Add orchestrator to change user membership temporarily
 - [ ] Add module to manage user credentials
 - [ ] Add module to manage Entra ID registered devices
-- [ ] Add modules to manage Intune MDM joined devices
+- [ ] Add module to manage Intune MDM joined devices
 
 <!-- See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues). -->
 
