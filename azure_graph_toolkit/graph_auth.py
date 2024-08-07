@@ -4,7 +4,7 @@ import logging
 from .utils import decorators
 
 @decorators.handle_http_exceptions
-def get_access_token(tenant_id:str, client_id:str, client_secret:str):
+def get_access_token(tenant_id:str, client_id:str, client_secret:str) -> dict :
 
     auth_url = f'{config.AUTH_BASE_URL}/{tenant_id}/oauth2/v2.0/token'
     scope = {config.GRAPH_SCOPE}
@@ -22,5 +22,8 @@ def get_access_token(tenant_id:str, client_id:str, client_secret:str):
 
     response = requests.post(auth_url,headers=header, data=data)
     response.raise_for_status()
-    token = response.json()["access_token"]
-    return token
+
+    return {
+        'status_code': response.status_code,
+        'access_token': response.text.json()["access_token"]
+    }

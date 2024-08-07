@@ -50,11 +50,5 @@ def handle_http_exceptions(func):
             'status_code': chunked_err.response.status_code,
             'error': chunked_err.response.text
             }
-        
-        except requests.exceptions.RequestException as req_err:
-            return {
-            'status_code': req_err.response.status_code,
-            'error': req_err.response.text
-            }
 
     return wrapper

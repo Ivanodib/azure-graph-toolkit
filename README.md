@@ -62,7 +62,7 @@ There are many great Azure libraries available on GitHub; however, I didn't find
 Features:
 * Add user to AAD group
 * Remove user from AAD group
-* List all user membership groups
+* List all user membership groups ò
 
 <!-- Here's why:
 * Automate Sysadmin daily task

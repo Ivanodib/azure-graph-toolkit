@@ -3,7 +3,6 @@ import json
 import logging
 from . import config
 from .utils import decorators
-
 logging.basicConfig(level=logging.ERROR)
 
 def get_http_header(access_token:str) -> dict:
@@ -87,7 +86,7 @@ def get_group_by_name(group_name:str, access_token:str) -> dict :
 
 
 @decorators.handle_http_exceptions
-def get_user_from_upn (UPN:str, access_token:str ) -> dict:
+def get_user_from_upn (user_upn:str, access_token:str ) -> dict:
 
     """
     Gets AAD user Id from User Principal Name (UPN).
@@ -100,7 +99,7 @@ def get_user_from_upn (UPN:str, access_token:str ) -> dict:
         dict: A dictionary containing status_code, id, job_title ."""
 
 
-    url = f'{config.GRAPH_BASE_URL_USER}/{UPN}' 
+    url = f'{config.GRAPH_BASE_URL_USER}/{user_upn}' 
 
     headers = get_http_header(access_token)
 
@@ -121,10 +120,58 @@ def get_user_from_upn (UPN:str, access_token:str ) -> dict:
 
 
 @decorators.handle_http_exceptions
+def get_user_membership_groups(user_upn:str, access_token:str) -> dict:
+    """
+    Lists all AAD groups the user is a member of.
+
+    Args:
+        user_upn (str): The User Principal Name (UPN).
+        access_token (str): The Graph API access token.
+
+    Returns:
+        dict: A dictionary containing all group names and group ids which user is member of.    
+    """    
+
+    url = f'{config.GRAPH_BASE_URL_USER}/{user_upn}/memberOf'
+    header = get_http_header(access_token)
+
+    result = requests.get(url,headers=header)
+    result.raise_for_status()
+    groups_data = result.json()
+
+    parsed_response = [{"displayName": group["displayName"], "id": group["id"]} for group in groups_data["value"]]
+
+    return {'status_code': result.status_code,
+            'groups': parsed_response}
+
+@decorators.handle_http_exceptions
+def if_user_member_of(user_upn:str, group_name:str, access_token:str) -> bool:
+    """
+    Check if user is member of specific AAD group.
+
+    Args:
+        user_upn (str): The User Principal Name (UPN).
+        group_name (str): The group name to search. This could be substring of the group name.
+        access_token (str): The Grah API access token.
+
+    Returns:
+        bool: A boolean value ."""
+    
+    response = get_user_membership_groups(user_upn, access_token)
+
+    if 'error' in response:
+        return response
+
+    for group in response['groups']:
+        if group_name in group['displayName']:
+            return True
+    return False
+
+@decorators.handle_http_exceptions
 def get_user_group_by_name (user_id:str,group_name:str,access_token:str) -> dict: 
     
     """
-    Gets AAD user group membership.
+    Gets specific AAD user group membership.
 
     Args:
         user_id (str): AAD user Id. 
