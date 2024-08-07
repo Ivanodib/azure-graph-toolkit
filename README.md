@@ -90,31 +90,31 @@ There are many great Azure libraries available on GitHub; however, I didn't find
 
 1. Install azure-graph-toolkit library from PyPi 
    ```sh
-    pip install azure-graph-toolkit
+   pip install azure-graph-toolkit
     ```
-2. Profit :)
+2. Profit 😁
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
+### Usage
 
 Import library modules
 
 ```python
-   from azure_graph_toolkit import graph_auth, graph_utils
+from azure_graph_toolkit import graph_auth, graph_utils
    ```
 
 App authentication and authorization. Once get the access token is possible to interact with Azure AD Graph API.
 ```python
 
-   tenant_id = '<tenant Id>'
-   client_id = '<client (App) Id>'
-   client_secret = '<client secret>'
+tenant_id = '<tenant Id>'
+client_id = '<client (App) Id>'
+client_secret = '<client secret>'
 
-   access_token = graph_auth.get_access_token(tenant_id, client_id, client_secret)
+access_token = graph_auth.get_access_token(tenant_id, client_id, client_secret)
    ```
 
 <br>
@@ -123,10 +123,9 @@ App authentication and authorization. Once get the access token is possible to i
 **Add user to AAD group:**
 ```python
 
-   result = graph_utils.add_user_to_group('mario.rossi@domain.com',
-                                          'block-usb-group',
-                                           access_token)
-   print(result)
+result = graph_utils.add_user_to_group('mario.rossi@domain.com', 'block-usb-group', access_token)
+
+print(result)
 
 
  ```
@@ -136,10 +135,9 @@ App authentication and authorization. Once get the access token is possible to i
  **Remove user from AAD group:**
 ```python
 
-   result = graph_utils.remove_user_from_group('mario.rossi@domain.com',
-                                               'block-usb-group',
-                                                access_token)
-   print(result)
+result = graph_utils.remove_user_from_group('mario.rossi@domain.com', 'block-usb-group', access_token)
+
+print(result)
  ```
  <br>
 
@@ -147,12 +145,10 @@ App authentication and authorization. Once get the access token is possible to i
  This library handles exceptions for you. Just verify the presence of the 'error' key in the JSON response: 
 ```python
 
-   result = graph_utils.remove_user_from_group('mario.rossi@domain.com',
-                                               'block-usb-group',
-                                                access_token)
+result = graph_utils.remove_user_from_group('mario.rossi@domain.com', 'block-usb-group', access_token)
 
-    if 'error' in result:
-        doSomething()
+if 'error' in result:
+  doSomething()
    
  ```
 <br>
