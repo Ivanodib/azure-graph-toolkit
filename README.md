@@ -6,7 +6,7 @@
   </a>-->
 
   <h1 align="center">azure-graph-toolkit</h1>
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Ivanodib/azure-graph-helper/.github%2Fworkflows%2Fdeployment-pipeline.yml)
+  [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Ivanodib/azure-graph-helper/.github%2Fworkflows%2Fdeployment-pipeline.yml)
 
   <p align="center">
     A Python library to manage Azure AD (Entra ID) user groups easily through Graph API.
