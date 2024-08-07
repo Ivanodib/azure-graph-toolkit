@@ -122,6 +122,17 @@ def get_user_from_upn (UPN:str, access_token:str ) -> dict:
 
 @decorators.handle_http_exceptions
 def get_user_group_by_name (user_id:str,group_name:str,access_token:str) -> dict: 
+    
+    """
+    Gets AAD user group membership.
+
+    Args:
+        user_id (str): AAD user Id. 
+        group_name (str): The group name to search. This could be substring of the group name.
+        access_token (str): The Grah API access token.
+
+    Returns:
+        dict: A dictionary containing status code, group id, group name ."""
 
     url = f'{config.GRAPH_BASE_URL_USER}/{user_id}/memberOf/microsoft.graph.group'
 
@@ -233,3 +244,4 @@ def remove_user_from_group(user_upn:str, group_name:str, access_token:str) -> di
         'status_code':response.status_code,
         'message': f'Success. User {user_upn} removed from AAD group {group_name}.'
     }
+  
