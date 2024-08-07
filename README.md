@@ -6,8 +6,10 @@
   </a>-->
 
   <h1 align="center">azure-graph-toolkit</h1>
-  
-  [GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Ivanodib/azure-graph-helper/.github%2Fworkflows%2Fdeployment-pipeline.yml)
+
+  ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Ivanodib/azure-graph-helper/.github%2Fworkflows%2Fdeployment-pipeline.yml?style=flat) ![PyPI - Version](https://img.shields.io/pypi/v/azure-graph-toolkit) 
+
+
 
 
   <p align="center">
@@ -56,6 +58,11 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 There are many great Azure libraries available on GitHub; however, I didn't find one that really suited my needs, so I created this one to simplify and automate daily sysadmin tasks.
+
+Features:
+* Add user to AAD group
+* Remove user from AAD group
+* List all user membership groups
 
 <!-- Here's why:
 * Automate Sysadmin daily task
