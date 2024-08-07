@@ -12,7 +12,9 @@
   </a>-->
 
   <h1 align="center">azure-graph-toolkit</h1>
-
+![example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+![PyPI](https://img.shields.io/pypi/v/PACKAGE?label=pypi%20package)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/PACKAGE)
   <p align="center">
     A Python library to manage Azure AD (Entra ID) user groups easily through Graph API.
     <br />
