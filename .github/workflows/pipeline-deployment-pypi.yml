@@ -29,8 +29,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python pip install setuptools
-        pip install wheel
+        pip install --upgrade setuptools wheel
     - name: Build package
       run: python setup.py sdist bdist_wheel
     - name: Publish package
