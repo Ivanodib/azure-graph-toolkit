@@ -278,11 +278,11 @@ def remove_user_from_group(user_upn:str, group_name:str, access_token:str) -> di
 
 
 @decorators.handle_http_exceptions
-def reset_user_password(user_upn:str, access_token:str, new_password:str = None, force_change_password_next_signin: bool = False):
+def user_reset_password(user_upn:str, access_token:str, new_password:str = None, force_change_password_next_signin: bool = False):
 
     # User.ReadWrite.All api permission
     # User Administrator to App service principal.
-    
+
     response_user_info = get_user_from_upn(user_upn, access_token)  
     user_id = response_user_info.get('id')
 
@@ -311,4 +311,18 @@ def reset_user_password(user_upn:str, access_token:str, new_password:str = None,
         'message': f'Success. User {user_upn} password was reset to {passwd}.'
     }
 
+@decorators.handle_http_exceptions
+def user_revoke_sessions(user_upn:str, access_token: str):
 
+    # User.RevokeSessions.All api permission
+
+    url = f'{config.GRAPH_BASE_URL_USER}/revokeSignInSessions'
+    headers = get_http_header(access_token)
+
+    response = requests.post(url, headers=headers)
+    response.raise_for_status()
+
+    return {
+        'status_code': response.status_code,
+        'message': f'Sessions revoked for user {user_upn}.'
+    }
