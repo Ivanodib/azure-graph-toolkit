@@ -2,9 +2,10 @@ from . import config
 import requests
 import logging
 from .utils import decorators
+from pprint import pprint
 
 @decorators.handle_http_exceptions
-def get_access_token(tenant_id:str, client_id:str, client_secret:str) -> dict :
+def get_access_token(tenant_id:str, client_id:str, client_secret:str):
 
     auth_url = f'{config.AUTH_BASE_URL}/{tenant_id}/oauth2/v2.0/token'
     scope = {config.GRAPH_SCOPE}
@@ -21,9 +22,15 @@ def get_access_token(tenant_id:str, client_id:str, client_secret:str) -> dict :
     }
 
     response = requests.post(auth_url,headers=header, data=data)
+    response.raise_for_status()        
+    return response.json().get('access_token')
+
+
+    '''
     response.raise_for_status()
 
     return {
         'status_code': response.status_code,
-        'access_token': response.text.json()["access_token"]
+        'access_token': response.json()["access_token"]
     }
+'''

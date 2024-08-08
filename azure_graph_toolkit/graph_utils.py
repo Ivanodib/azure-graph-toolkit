@@ -144,7 +144,7 @@ def get_user_membership_groups(user_upn:str, access_token:str) -> dict:
     return {'status_code': result.status_code,
             'groups': parsed_response}
 
-@decorators.handle_http_exceptions
+#@decorators.handle_http_exceptions
 def if_user_member_of(user_upn:str, group_name:str, access_token:str) -> bool:
     """
     Check if user is member of specific AAD group.
@@ -158,9 +158,6 @@ def if_user_member_of(user_upn:str, group_name:str, access_token:str) -> bool:
         bool: A boolean value ."""
     
     response = get_user_membership_groups(user_upn, access_token)
-
-    if 'error' in response:
-        return response
 
     for group in response['groups']:
         if group_name in group['displayName']:
@@ -222,18 +219,12 @@ def add_user_to_group(user_upn:str, group_name:str, access_token:str) -> dict:
     Returns:
         dict: A dictionary containing the status code, id, job_title ."""
 
-    response_user_info = get_user_from_upn(user_upn, access_token)
-
-    if 'error' in response_user_info:
-        return response_user_info    
+    response_user_info = get_user_from_upn(user_upn, access_token)  
     user_id = response_user_info.get('id')
 
  
     response_user_group = get_group_by_name(group_name,access_token)
 
-    if 'error' in response_user_group:
-        return response_user_group
-    
     group_id = response_user_group.get('group_id')
     group_name = response_user_group.get('group_name')
 
@@ -268,15 +259,9 @@ def remove_user_from_group(user_upn:str, group_name:str, access_token:str) -> di
         dict: A dictionary containing the status code and graph result  ."""
 
     response_user_info = get_user_from_upn(user_upn, access_token)
-
-    if 'error' in response_user_info:
-        return response_user_info    
     user_id = response_user_info.get('id')
    
     response_user_group = get_user_group_by_name(user_id,group_name,access_token)
-
-    if 'error' in response_user_group:
-        return response_user_group
     
     group_id = response_user_group.get('group_id')
     group_name = response_user_group.get('group_name')
