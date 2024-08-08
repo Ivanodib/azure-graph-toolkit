@@ -60,9 +60,12 @@
 There are many great Azure libraries available on GitHub; however, I didn't find one that really suited my needs, so I created this one to simplify and automate daily sysadmin tasks.
 
 Features:
-* Add user to AAD group
-* Remove user from AAD group
-* List all user membership groups ò
+* Add user to AAD security group
+* Remove user from AAD security group
+* List all user membership groups
+* Reset user password
+* Disable user
+* Reset user session token
 
 <!-- Here's why:
 * Automate Sysadmin daily task
