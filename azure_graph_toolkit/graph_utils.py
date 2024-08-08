@@ -243,7 +243,6 @@ def add_user_to_group(user_upn:str, group_name:str, access_token:str) -> dict:
         'message': f'Success. User {user_upn} added to AAD group {group_name}.'
     }
 
-
 @decorators.handle_http_exceptions
 def remove_user_from_group(user_upn:str, group_name:str, access_token:str) -> dict:
 
@@ -276,4 +275,40 @@ def remove_user_from_group(user_upn:str, group_name:str, access_token:str) -> di
         'status_code':response.status_code,
         'message': f'Success. User {user_upn} removed from AAD group {group_name}.'
     }
-  
+
+
+@decorators.handle_http_exceptions
+def reset_user_password(user_upn:str, access_token:str, new_password:str = None, force_change_password_next_signin: bool = False):
+
+    # User.ReadWrite.All api permission
+    # User Administrator to App service principal.
+    
+    response_user_info = get_user_from_upn(user_upn, access_token)  
+    user_id = response_user_info.get('id')
+
+    url = f'{config.GRAPH_BASE_URL_USER}/{user_id}'
+
+    headers = get_http_header(access_token)
+
+    passwd = ''
+    if new_password is None:
+        passwd = 'generated_pw'
+    else:
+        passwd = new_password
+
+    payload = {
+        'passwordProfile': {
+            'forceChangePasswordNextSignIn': force_change_password_next_signin,
+            'password': f'{passwd}'    
+        }
+    }
+
+    response = requests.patch(url, headers=headers, json=payload)
+    response.raise_for_status()
+
+    return {
+        'status_code':response.status_code,
+        'message': f'Success. User {user_upn} password was reset to {passwd}.'
+    }
+
+

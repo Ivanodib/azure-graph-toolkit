@@ -9,7 +9,6 @@ class GraphHTTPError(Exception):
     pass
 
 
-
 def handle_http_exceptions(func):
     """
     Decorator to handle HTTP exceptions in all functions.
