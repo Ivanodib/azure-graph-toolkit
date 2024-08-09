@@ -1,5 +1,3 @@
-<!-- PROJECT LOGO -->
-<br />
 <!--<div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
      <img src="images/logo.png" alt="Logo" width="80" height="80">
@@ -60,9 +58,12 @@
 There are many great Azure libraries available on GitHub; however, I didn't find one that really suited my needs, so I created this one to simplify and automate daily sysadmin tasks.
 
 Features:
-* Add user to AAD group
-* Remove user from AAD group
-* List all user membership groups ò
+* Add user to AAD security group
+* Remove user from AAD security group
+* List all user membership groups
+* Reset user password
+* Disable/enable user
+* Revoke user session tokens
 
 <!-- Here's why:
 * Automate Sysadmin daily task
@@ -82,11 +83,13 @@ Features:
 2. Azure AD App Registration with the following role assigned *(App delegation)*:
 
 
-| Least privilege role | Type | Description |
+| Least privilege role | Delegation type | Description |
 | --- | --- | --- |
 | `GroupMember.ReadWrite.All` | Application | To manage user membership groups. |
-| `GroupMember.Read.All` | Application | List all the groups available, excluding dynamic distribution groups. |
-| `User.Read.All` | Application | To get user informations. |
+| `GroupMember.Read.All` | Application | List all the groups available. |
+| `User.ReadWrite.All` | Application | To change user password. |
+| `User.ManageIdentities.All`, `User.EnableDisableAccount.All` | Application | To disable/enable user. |
+| `User.RevokeSessions.All` | Application | To revoke user session tokens. |
 
 <br>
 
