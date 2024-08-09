@@ -83,7 +83,7 @@ Features:
 2. Azure AD App Registration with the following role assigned *(App delegation)*:
 
 
-| Least privilege role | Type | Description |
+| Least privilege role | Delegation type | Description |
 | --- | --- | --- |
 | `GroupMember.ReadWrite.All` | Application | To manage user membership groups. |
 | `GroupMember.Read.All` | Application | List all the groups available. |
