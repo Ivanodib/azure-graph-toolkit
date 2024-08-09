@@ -1,4 +1,4 @@
-<!-- PROJECT LOGO -->
+![image](https://github.com/user-attachments/assets/efbd6e51-fcc4-4764-9f70-2f4b2a334045)<!-- PROJECT LOGO -->
 <br />
 <!--<div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
@@ -90,8 +90,7 @@ Features:
 | `GroupMember.ReadWrite.All` | Application | To manage user membership groups. |
 | `GroupMember.Read.All` | Application | List all the groups available. |
 | `User.ReadWrite.All` | Application | To change user password. |
-| `User.ReadWrite.All`         |             |                         |
-`User.EnableDisableAccount.All`| Application | To disable/enable user. |
+| `User.ReadWrite.All`, `User.EnableDisableAccount.All` | Application | To disable/enable user. |
 
 <br>
 
