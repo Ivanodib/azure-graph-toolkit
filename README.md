@@ -62,8 +62,8 @@ Features:
 * Remove user from AAD security group
 * List all user membership groups
 * Reset user password
-* Disable user
-* Reset user session token
+* Disable/enable user
+* Revoke user session tokens
 
 <!-- Here's why:
 * Automate Sysadmin daily task
