@@ -311,6 +311,7 @@ def user_reset_password(user_upn:str, access_token:str, new_password:str = None,
         'message': f'Success. User {user_upn} password was reset to {passwd}.'
     }
 
+
 @decorators.handle_http_exceptions
 def user_revoke_sessions(user_upn:str, access_token: str):
 
@@ -326,3 +327,9 @@ def user_revoke_sessions(user_upn:str, access_token: str):
         'status_code': response.status_code,
         'message': f'Sessions revoked for user {user_upn}.'
     }
+
+
+def user_enable_account(user_upn:str, access_token: str):
+    return
+
+#accountEnabled
