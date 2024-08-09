@@ -88,8 +88,10 @@ Features:
 | Least privilege role | Type | Description |
 | --- | --- | --- |
 | `GroupMember.ReadWrite.All` | Application | To manage user membership groups. |
-| `GroupMember.Read.All` | Application | List all the groups available, excluding dynamic distribution groups. |
-| `User.Read.All` | Application | To get user informations. |
+| `GroupMember.Read.All` | Application | List all the groups available. |
+| `User.ReadWrite.All` | Application | To change user password. |
+| `User.ReadWrite.All`
+`User.EnableDisableAccount.All`| Application | To disable/enable user. |
 
 <br>
 
