@@ -90,7 +90,7 @@ Features:
 | `GroupMember.ReadWrite.All` | Application | To manage user membership groups. |
 | `GroupMember.Read.All` | Application | List all the groups available. |
 | `User.ReadWrite.All` | Application | To change user password. |
-| `User.ReadWrite.All`
+| `User.ReadWrite.All`         |             |                         |
 `User.EnableDisableAccount.All`| Application | To disable/enable user. |
 
 <br>
