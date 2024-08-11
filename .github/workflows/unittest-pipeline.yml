@@ -39,7 +39,4 @@ jobs:
         name: test-report.html
         path: test
 
-    # Aggiornamento del badge
-    - name: Coverage Badge
-      uses: we-cli/coverage-badge-action@v1.0.1
         
