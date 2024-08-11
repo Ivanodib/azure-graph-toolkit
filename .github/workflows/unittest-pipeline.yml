@@ -35,5 +35,5 @@ jobs:
     - name: Upload test report
       uses: actions/upload-artifact@v3
       with:
-        name: test-report
-        path: report.html
+        name: test-report.html
+        path: test
