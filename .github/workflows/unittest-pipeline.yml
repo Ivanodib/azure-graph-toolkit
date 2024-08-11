@@ -29,7 +29,7 @@ jobs:
     - name: Run tests
       run: |
         cd test
-        pytest test.py --html=test-report.html
+        pytest unit-test.py --html=test-report.html
 
     # Upload del report dei test come artefatto
     - name: Upload test report
