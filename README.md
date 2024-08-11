@@ -7,7 +7,7 @@
 
   ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Ivanodib/azure-graph-helper/.github%2Fworkflows%2Fdeployment-pipeline.yml?style=flat)
   [![Run unit test](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/unittest-pipeline.yml/badge.svg)](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/unittest-pipeline.yml)
-  [PyPI - Version](https://img.shields.io/pypi/v/azure-graph-toolkit) 
+  ![PyPI - Version](https://img.shields.io/pypi/v/azure-graph-toolkit) 
 
 
 
