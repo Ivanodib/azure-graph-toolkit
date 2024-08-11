@@ -28,7 +28,8 @@ jobs:
     # Esegui i test
     - name: Run tests
       run: |
-        pytest test.py --html=report.html
+        cd test
+        pytest test.py --html=test-report.html
 
     # Upload del report dei test come artefatto
     - name: Upload test report
