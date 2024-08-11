@@ -22,14 +22,15 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest pytest-html requests  # Installa pytest e pytest-html
+        pip install pytest pytest-html requests coverage  # Installa pytest e pytest-html
         # Aggiungi altri comandi di installazione se necessario
 
     # Esegui i test
     - name: Run tests
       run: |
         cd test
-        pytest unit-test.py --html=test-report.html
+        coverage run -m pytest ./test/unit-test.py --html=test-report.html
+        coverage html -d coverage-report
 
     # Upload del report dei test come artefatto
     - name: Upload test report
