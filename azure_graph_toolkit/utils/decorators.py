@@ -27,7 +27,7 @@ def handle_http_exceptions(func):
         except requests.exceptions.HTTPError as http_err:
 
             error_response = {
-            "status": http_err.response.status_code,
+            "status_code": http_err.response.status_code,
             "error": http_err.response.json().get('error'),
             "error_description": http_err.response.json().get('error_description')
             }

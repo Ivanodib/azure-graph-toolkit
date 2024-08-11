@@ -105,7 +105,7 @@ def get_user_from_upn (user_upn:str, access_token:str ) -> dict:
 
     response = requests.get(url, headers=headers)
     response.raise_for_status()
-    response_data = json.loads(response.text)
+    response_data = response.json()
 
     user_id = response_data.get('id')
     upn= response_data.get('userPrincipalName')
