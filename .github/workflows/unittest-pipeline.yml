@@ -1,4 +1,4 @@
-name: Run unit test
+name: Unit test
 
 # Evento di trigger: Esegui la pipeline su ogni push
 on: [push]
