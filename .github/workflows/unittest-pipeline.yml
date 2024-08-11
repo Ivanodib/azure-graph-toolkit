@@ -39,4 +39,11 @@ jobs:
         name: test-report.html
         path: test
 
+    # Upload del report dei test come artefatto
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: test    
+
         
