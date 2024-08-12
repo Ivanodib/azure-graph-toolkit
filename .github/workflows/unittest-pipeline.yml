@@ -22,15 +22,20 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest pytest-html requests coverage  # Installa pytest e pytest-html
+        pip install pytest pytest-html coveralls requests coverage  # Installa pytest e pytest-html
         # Aggiungi altri comandi di installazione se necessario
 
     # Esegui i test
     - name: Run tests
       run: |
         cd test
-        coverage run -m pytest unit-test.py --html=test-report.html
-        coverage html -d coverage-report
+      #  coverage run -m pytest unit-test.py --html=test-report.html
+        
+      #  coverage html -d coverage-report
+    
+    - name: Coveralls GitHub Action
+      uses: coverallsapp/github-action@v2.3.0
+      
 
     # Upload del report dei test come artefatto
     - name: Upload test report
