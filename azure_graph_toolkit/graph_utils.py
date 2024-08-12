@@ -144,7 +144,7 @@ def get_user_membership_groups(user_upn:str, access_token:str) -> dict:
     return {'status_code': result.status_code,
             'groups': parsed_response}
 
-#@decorators.handle_http_exceptions
+@decorators.handle_http_exceptions
 def if_user_member_of(user_upn:str, group_name:str, access_token:str) -> bool:
     """
     Check if user is member of specific AAD group.

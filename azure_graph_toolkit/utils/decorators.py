@@ -1,7 +1,6 @@
 import requests
 from functools import wraps
 import logging
-import json
 
 logging.basicConfig(level=logging.ERROR)
 

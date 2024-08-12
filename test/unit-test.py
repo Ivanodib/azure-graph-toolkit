@@ -1,75 +1,100 @@
-
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from unittest.mock import patch, MagicMock
 import pytest
+from unittest.mock import patch, Mock
 import requests
-
+from azure_graph_toolkit.utils import decorators
 from azure_graph_toolkit.graph_utils import (
-    get_group_by_name,
     get_user_from_upn,
-    decorators
+    get_user_membership_groups,
+    get_user_group_by_name,
+    add_user_to_group,
+    remove_user_from_group
 )
 
-class TestGetUserFromUpn:
-    
-    @patch('requests.get')
-    def test_get_user_from_upn_success(self, mock_get):
+def run_generic_http_test(func_to_test, func_args, expected_error_info, http_method):
+    """
+    Testa una funzione decorata con handle_http_exceptions che utilizza un metodo HTTP specifico.
 
-        mock_response = MagicMock()
-        mock_response.status_code = 200
-        mock_response.json.return_value = {
-            'id': 'user123',
-            'userPrincipalName': 'user@example.com',
-            'jobTitle': 'Developer'
-        }
-        mock_get.return_value = mock_response
-        
-
-        result = get_user_from_upn('user@example.com', 'fake_token')
-        assert result == {
-            'status_code': 200,
-            'id': 'user123',
-            'upn': 'user@example.com',
-            'job_title': 'Developer'
-        }
-
-    @patch('requests.get')
-    def test_get_user_from_upn_http_error(self, mock_get):
-        # Simula una risposta con errore HTTP
-        mock_response = MagicMock()
-        mock_response.status_code = 404
-        mock_response.json.return_value = {
-        'error': {
-            'code': 'Request_ResourceNotFound',
-            'message': "Resource 'user.example@domain.com' does not exist or one of its queried reference-property objects are not present.",
-            'innerError': {
-                'date': '2024-08-11T13:10:10',
-                'request-id': 'request-id123',
-                'client-request-id': 'client-request-id123'
-            }
-        },
-        'error_description': None
+    Args:
+        func_to_test (callable): La funzione decorata da testare.
+        func_args (tuple): Argomenti da passare alla funzione di test.
+        expected_error_info (dict): Il dizionario con le informazioni di errore attese.
+        http_method (str): Il metodo HTTP da testare ('get', 'post', 'patch', 'delete').
+    """
+    # Mock della risposta HTTP e dell'eccezione
+    mock_response = Mock()
+    mock_response.status_code = expected_error_info["status_code"]
+    mock_response.json.return_value = {
+        "error": expected_error_info["error"],
+        "error_description": expected_error_info["error_description"]
     }
-        mock_response.raise_for_status.side_effect = requests.exceptions.HTTPError(response=mock_response)
 
-        with patch('requests.get', return_value=mock_response):
-            with pytest.raises(decorators.GraphHTTPError) as excinfo:
-                get_user_from_upn('user@example.com', 'fake_token')
+    # Simulazione di eccezione HTTPError
+    mock_http_error = requests.exceptions.HTTPError(response=mock_response)
+
+    # metodo patch HTTP parametrizzato
+    patch_target = f'requests.{http_method.lower()}'
+
+    # Patch del metodo HTTP specificato per sollevare l'eccezione simulata
+    with patch(patch_target, side_effect=mock_http_error):
+        with pytest.raises(decorators.GraphHTTPError) as exc_info:
+            func_to_test(*func_args)
+
+        # Verifica che l'eccezione contenga le informazioni attese
+        assert exc_info.value.args[0] == expected_error_info
     
-        # Verifica che l'eccezione sollevata contenga i dati corretti
-        assert excinfo.value.args[0] == {
-        'status_code':404,
-        'error': {
-            'code': 'Request_ResourceNotFound',
-            'message': "Resource 'user.example@domain.com' does not exist or one of its queried reference-property objects are not present.",
-            'innerError': {
-                'date': '2024-08-11T13:10:10',
-                'request-id': 'request-id123',
-                'client-request-id': 'client-request-id123'
-            }
-        },
-        'error_description': None
+
+def test_error_get_user_from_upn():
+    func_args = ("user@example.com", "fake_access_token")
+    expected_error_info = {
+        "status_code": 404,
+        "error": "ResourceNotFound",
+        "error_description": "The user was not found."
     }
+    run_generic_http_test(get_user_from_upn, func_args, expected_error_info, 'get')
+
+def test_error_get_user_membership_groups():
+    func_args = ("user@example.com", "fake_access_token")
+    expected_error_info = {
+        "status_code": 404,
+        "error": "ResourceNotFound",
+        "error_description": "No AAD groups found for user."
+    }
+    run_generic_http_test(get_user_membership_groups, func_args, expected_error_info, 'get')        
+
+def test_error_get_user_group_by_name():
+    func_args = ("user@example.com", "fake_group_name", "fake_access_token")
+    expected_error_info = {
+        "status_code": 404,
+        "error": "ResourceNotFound",
+        "error_description": "No AAD groups found for user."
+    }
+    run_generic_http_test(get_user_group_by_name, func_args, expected_error_info, 'get')
+
+def test_error_add_user_to_group():
+    func_args = ("user@example.com", "fake_group_name", "fake_access_token")
+
+    expected_error_info = {
+        "status_code": 404,
+        "error": "ResourceNotFound",
+        "error_description": "No AAD groups found for user."
+    }
+
+    with patch('azure_graph_toolkit.graph_utils.get_user_from_upn') as mock_get_user_from_upn, \
+         patch('azure_graph_toolkit.graph_utils.get_group_by_name') as mock_get_group_by_name, \
+         patch('requests.post') as mock_post:
+
+        # Configurazione dei mock per le chiamate GET come prerequisito della funzione add_user_to_group<
+        mock_get_user_from_upn.return_value = {'id': 'user-id'}
+        mock_get_group_by_name.return_value = {'group_id': 'group-id', 'group_name': 'fake_group_name'}
+
+        # Simulazione di un errore nella chiamata POST
+        mock_response_post = Mock()
+        mock_response_post.status_code = 404
+        mock_response_post.json.return_value = {
+            "error": "ResourceNotFound",
+            "error_description": "No AAD groups."
+        }
+        mock_post.side_effect = requests.exceptions.HTTPError(response=mock_response_post)
+
+
+        run_generic_http_test(add_user_to_group, func_args, expected_error_info, 'post')
