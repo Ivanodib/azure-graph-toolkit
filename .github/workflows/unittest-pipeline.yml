@@ -28,7 +28,7 @@ jobs:
     # Esegui i test
     - name: Run tests
       run: |
-        cd test
+        coveralls
       #  coverage run -m pytest unit-test.py --html=test-report.html
         
       #  coverage html -d coverage-report
