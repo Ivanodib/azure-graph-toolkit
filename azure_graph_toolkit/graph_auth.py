@@ -25,12 +25,3 @@ def get_access_token(tenant_id:str, client_id:str, client_secret:str):
     response.raise_for_status()        
     return response.json().get('access_token')
 
-
-    '''
-    response.raise_for_status()
-
-    return {
-        'status_code': response.status_code,
-        'access_token': response.json()["access_token"]
-    }
-'''

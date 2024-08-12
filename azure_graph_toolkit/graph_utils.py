@@ -138,7 +138,7 @@ def get_user_membership_groups(user_upn:str, access_token:str) -> dict:
     result = requests.get(url,headers=header)
     result.raise_for_status()
     groups_data = result.json()
-
+    #print(groups_data)
     parsed_response = [{"displayName": group["displayName"], "id": group["id"]} for group in groups_data["value"]]
 
     return {'status_code': result.status_code,
