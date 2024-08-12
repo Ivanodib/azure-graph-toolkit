@@ -191,6 +191,9 @@ def get_user_group_by_name (user_id:str,group_name:str,access_token:str) -> dict
     result = requests.get(url,headers=header, params=params)
     result.raise_for_status()
     groups_data = result.json()
+    #print(groups_data)
+
+
 
     for group in groups_data['value']:
         if group_name in group['displayName']:

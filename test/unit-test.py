@@ -150,13 +150,36 @@ def test_success_get_user_membership_groups():
     run_generic_http_test(get_user_membership_groups,func_args,expected_info,'get',mock_response_json,should_raise=False)
 
 def test_error_get_user_group_by_name():
-    func_args = ("user@example.com", "fake_group_name", "fake_access_token")
-    expected_error_info = {
-        "status_code": 404,
-        "error": "ResourceNotFound",
-        "error_description": "No AAD groups found for user."
-    }
+    func_args = ("fake_user_id", "fake_group_name", "fake_access_token")
+    
+    expected_error_info = {'status_code': 400, 
+                            'error': {
+                                'code': 'Request_BadRequest', 
+                                'message': 'Bad request. Please fix the request before retrying.',
+                                'innerError': {
+                                'date': '2024-08-12T15:34:20', 'request-id': 'xxxxxxxxxxxxxx', 'client-request-id': 'yyyyyyyyy'}},
+                                'error_description': None}
+    
+
+
     run_generic_http_test(get_user_group_by_name, func_args, expected_error_info, 'get', should_raise=True)
+
+def test_success_get_user_group_by_name():
+    func_args = ('user-id','Group-A','fake_access_token')
+    expected_info = {
+        'status_code':200,
+        'group_id':'xxxxxxx',
+        'group_name':'Group-A'
+    }
+
+    mock_json_response = {
+        '@odata.context': 'https://graph.microsoft.com/v1.0/$metadata#groups(displayName,id)',
+            '@odata.count': 1, 'value':[{
+            'displayName': 'Group-A',
+            'id': 'xxxxxxx'}]
+            }
+    
+    run_generic_http_test(get_user_group_by_name,func_args,expected_info,'get',mock_json_response,should_raise=False)
 
 def test_error_add_user_to_group():
     func_args = ("user@example.com", "fake_group_name", "fake_access_token")
