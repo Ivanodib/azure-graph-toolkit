@@ -5,7 +5,7 @@
 
   <h1 align="center">azure-graph-toolkit</h1>
 
-[![Unit test](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/unittest-pipeline.yml/badge.svg)](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/unittest-pipeline.yml)  [![Unit test](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/deployment-pipeline.yml/badge.svg)](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/deployment-pipeline.yml) ![PyPI - Version](https://img.shields.io/pypi/v/azure-graph-toolkit) 
+[![Unit test](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/unittest-pipeline.yml/badge.svg)](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/unittest-pipeline.yml) [![Coverage Status](https://coveralls.io/repos/github/Ivanodib/azure-graph-toolkit/badge.svg)](https://coveralls.io/github/Ivanodib/azure-graph-toolkit)  [![Unit test](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/deployment-pipeline.yml/badge.svg)](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/deployment-pipeline.yml) ![PyPI - Version](https://img.shields.io/pypi/v/azure-graph-toolkit) 
 
 
 
