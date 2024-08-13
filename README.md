@@ -147,6 +147,15 @@ print(result)
  ```
  <br>
 
+ **Disable user:**
+```python
+
+result = graph_utils.set_user_account_status('mario.rossi@domain.com', enable_account=False, access_token)
+
+print(result)
+ ```
+ <br>
+
 
 
   Example Output
