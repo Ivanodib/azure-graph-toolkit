@@ -1,6 +1,6 @@
 name: Unit test
 
-# Evento di trigger: Esegui la pipeline su ogni push
+
 on: [push]
 
 jobs:
@@ -8,43 +8,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout del codice dal repository
     - name: Checkout code
       uses: actions/checkout@v2
 
-    # Configura Python
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.8'  # Sostituisci con la versione di Python che desideri usare
+        python-version: '3.8' 
 
-    # Installa le dipendenze
+ 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest pytest-html coveralls requests coverage  # Installa pytest e pytest-html
-        # Aggiungi altri comandi di installazione se necessario
+        pip install pytest pytest-html coveralls requests coverage  
 
-    # Esegui i test
     - name: Run tests
       run: |
         cd test
         coverage run -m pytest unit-test.py --html=test-report.html
         
-      #  coverage html -d coverage-report
     
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@v2.3.0
       
 
-    # Upload del report dei test come artefatto
+    # Upload test report as artifact
     - name: Upload test report
       uses: actions/upload-artifact@v3
       with:
         name: test-report.html
         path: test
 
-    # Upload del report dei test come artefatto
+    # Upload coverage report as artifact
     - name: Upload coverage report
       uses: actions/upload-artifact@v3
       with:

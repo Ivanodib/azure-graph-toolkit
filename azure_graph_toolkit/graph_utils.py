@@ -37,7 +37,7 @@ def get_group_by_name(group_name:str, access_token:str) -> dict :
         dict: A dictionary containings the group id and group name.
     
     Raises:
-        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails."""
+        requests.exceptions.HTTPError: If the HTTP request to obtain group fails."""
 
 
     url = f'{config.GRAPH_BASE_URL_GROUP}/'
@@ -102,7 +102,7 @@ def get_user_from_upn (user_upn:str, access_token:str ) -> dict:
         dict: A dictionary containing status_code, id, job_title .
 
     Raises:
-        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails."""
+        requests.exceptions.HTTPError: If the HTTP request to obtain the user id fails."""
 
 
     url = f'{config.GRAPH_BASE_URL_USER}/{user_upn}' 
@@ -138,7 +138,7 @@ def get_user_membership_groups(user_upn:str, access_token:str) -> dict:
         dict: A dictionary containing all group names and group ids which user is member of.
     
     Raises:
-        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails.            
+        requests.exceptions.HTTPError: If the HTTP request to obtain groups fails.            
     """    
 
     url = f'{config.GRAPH_BASE_URL_USER}/{user_upn}/memberOf'
@@ -167,7 +167,7 @@ def if_user_member_of(user_upn:str, group_name:str, access_token:str) -> bool:
         bool: A boolean value.
     
     Raises:
-        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails."""
+        requests.exceptions.HTTPError: If the HTTP request to obtain the user group fails."""
     
     response = get_user_membership_groups(user_upn, access_token)
 
@@ -191,7 +191,7 @@ def get_user_group_by_name (user_id:str,group_name:str,access_token:str) -> dict
         dict: A dictionary containing status code, group id, group name .
         
     Raises:
-        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails."""
+        requests.exceptions.HTTPError: If the HTTP request to obtain group fails."""
 
     url = f'{config.GRAPH_BASE_URL_USER}/{user_id}/memberOf/microsoft.graph.group'
 
@@ -206,9 +206,6 @@ def get_user_group_by_name (user_id:str,group_name:str,access_token:str) -> dict
     result = requests.get(url,headers=header, params=params)
     result.raise_for_status()
     groups_data = result.json()
-    #print(groups_data)
-
-
 
     for group in groups_data['value']:
         if group_name in group['displayName']:
@@ -218,7 +215,7 @@ def get_user_group_by_name (user_id:str,group_name:str,access_token:str) -> dict
                 'group_name':group['displayName']
             }
     return {
-        'status_code':result.status_code,
+        'status_code':404,
         'error':f'No AAD group that contains {group_name} for user {user_id} found. Try another name.'
     }
 
@@ -238,7 +235,7 @@ def add_user_to_group(user_upn:str, group_name:str, access_token:str) -> dict:
         dict: A dictionary containing the status code, id, job_title .
         
     Raises:
-        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails.    """
+        requests.exceptions.HTTPError: If the HTTP request to add user fails.    """
 
     response_user_info = get_user_from_upn(user_upn, access_token)  
     user_id = response_user_info.get('id')
@@ -279,7 +276,7 @@ def remove_user_from_group(user_upn:str, group_name:str, access_token:str) -> di
         dict: A dictionary containing the status code and graph result  .
     
     Raises:
-        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails."""
+        requests.exceptions.HTTPError: If the HTTP request to remove user fails."""
 
     response_user_info = get_user_from_upn(user_upn, access_token)
     user_id = response_user_info.get('id')
@@ -319,7 +316,7 @@ def user_reset_password(user_upn:str, new_password:str, access_token:str, force_
         dict: A dictionary containing the status code and a message indicating the result of the operation.
 
      Raises:
-        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails.            
+        requests.exceptions.HTTPError: If the HTTP request to update user password fails.            
     """
 
     url = f'{config.GRAPH_BASE_URL_USER}/{user_upn}'
@@ -345,8 +342,19 @@ def user_reset_password(user_upn:str, new_password:str, access_token:str, force_
 
 @decorators.handle_http_exceptions
 def user_revoke_sessions(user_upn:str, access_token: str):
+    """
+    Revokes all active sessions for a specified user.
 
-    # User.RevokeSessions.All api permission
+    Args:
+        user_upn (str): The user's principal name (UPN).
+        access_token (str): The access token for the Graph API.
+
+    Returns:
+        dict: A dictionary containing the status code and a message indicating that the user's sessions were revoked.
+
+    Raises:
+        requests.exceptions.HTTPError: If the HTTP request to revoke sessions fails.
+    """
 
     url = f'{config.GRAPH_BASE_URL_USER}/revokeSignInSessions'
     headers = get_http_header(access_token)
@@ -374,7 +382,7 @@ def user_set_account_status(user_upn:str, enable_account:bool , access_token: st
         dict: A dictionary containing the status code and the result of the operation.
     
     Raises:
-        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails.
+        requests.exceptions.HTTPError: If the HTTP request to set account status fails.
     """
 
     url = f'{config.GRAPH_BASE_URL_USER}/{user_upn}'

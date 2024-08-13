@@ -134,7 +134,6 @@ result = graph_utils.add_user_to_group('mario.rossi@domain.com', 'block-usb-grou
 
 print(result)
 
-
  ```
 
 <br>
@@ -156,7 +155,7 @@ print(result)
  
  ```
  ```python
- {'status_code': 200, 'error': 'No AAD group name that contains block-usb-group found. Try another name.'}
+ {'status_code': 404, 'error': 'No AAD group with a name containing \'block-usb-group\' was found. Please try another group name.'}
  ```
 
 
@@ -169,31 +168,23 @@ print(result)
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Add device to group
-- [ ] Remove device from group
+- [ ] List user MFA status
 - [ ] List user's owned devices
 - [ ] List devices compliance status
-- [ ] Create and delete user
-- [ ] Create and delete group
+- [ ] Add device to group
+- [ ] Remove device from group
+- [ ] Create and delete users
+- [ ] Create and delete groups
 
 <!-- See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues). -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-<!-- CONTRIBUTING -->
-<!-->
-## Contributing
-Any contributions you make are **greatly appreciated**.
-
-<br>
--->
-
-
 <!-- CONTACT -->
 ## Contact
 Ivano Dibenedetto - [@Linkedin](https://www.linkedin.com/in/ivano-dibenedetto-b526ab188/) - ivano.dibenedetto7@gmail.com
 
-Project Link: [https://github.com/Ivanodib/azure-graph-helper](https://github.com/Ivanodib/azure-graph-helper)
+Project Link: [https://github.com/Ivanodib/azure-graph-toolkit](https://github.com/Ivanodib/azure-graph-toolkit)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

@@ -26,8 +26,12 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: '3.x'
+
+        
     - name: Install dependencies
       run: pip install wheel setuptools --upgrade
+
+
     - name: Build package
       run: python setup.py sdist bdist_wheel
     - name: Publish package
