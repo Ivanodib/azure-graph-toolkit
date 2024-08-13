@@ -1,5 +1,4 @@
 import requests
-import json
 import logging
 from . import config
 from .utils import decorators
