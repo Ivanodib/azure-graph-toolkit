@@ -156,6 +156,15 @@ print(result)
  ```
  <br>
 
+  **Revoke user sessions:**
+```python
+
+result = graph_utils.user_revoke_sessions('mario.rossi@domain.com', access_token)
+
+print(result)
+ ```
+ <br>
+
 
 
   Example Output
