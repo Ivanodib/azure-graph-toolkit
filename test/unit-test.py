@@ -67,7 +67,6 @@ def run_generic_http_test(func_to_test, func_args, expected_info: dict, http_met
 
             # Verifica che il risultato contenga le informazioni attese
             assert result == expected_info
-    
 
 def test_error_get_user_from_upn():
     func_args = ("user@example.com", "fake_access_token")
@@ -214,6 +213,30 @@ def test_error_add_user_to_group():
 
         run_generic_http_test(add_user_to_group, func_args, expected_error_info, 'post', should_raise=True)
 
+def test_success_add_user_to_group():
+    
+    mock_user_upn = "user@example.com"
+    mock_group_name = "Group-A"
+    
+    func_args = (mock_user_upn, mock_group_name, "fake_access_token")
+
+    with patch('azure_graph_toolkit.graph_utils.get_user_from_upn') as mock_get_user_from_upn, \
+        patch('azure_graph_toolkit.graph_utils.get_group_by_name') as mock_get_group_by_name:
+
+        # Configurazione dei mock per le chiamate GET come prerequisito della funzione add_user_to_group<
+        mock_get_user_from_upn.return_value = {'id': 'user-id'}
+        mock_get_group_by_name.return_value = {'group_id': 'group-id', 'group_name': mock_group_name}
+
+        expected_info = {
+        'status_code':200,
+        'message': f'Success. User {mock_user_upn} added to AAD group {mock_group_name}.'
+        }
+
+        mock_json_response = {
+        'status_code':204,
+        }
+
+        run_generic_http_test(add_user_to_group,func_args,expected_info,'post',mock_json_response)
 
 def test_error_remove_user_from_group():
     func_args = ('user@example.com','Group-A','fake_access_token')
@@ -223,12 +246,12 @@ def test_error_remove_user_from_group():
          patch('azure_graph_toolkit.graph_utils.get_user_group_by_name') as mock_get_group_by_name:
 
         # Configurazione dei mock per le chiamate GET come prerequisito della funzione add_user_to_group<
-        mock_get_user_from_upn.return_value = {'status_code':404, 'id': None, 'job_title':'dev'}
+        mock_get_user_from_upn.return_value = {'status_code':400, 'id': None, 'job_title':'dev'}
         mock_get_group_by_name.return_value = {'group_id': 'group-id', 'group_name': 'Group-A'}
 
 
         expected_error_info = {
-            'status_code': 401,
+            'status_code': 400,
             'error': 
             {'code': 'Request_BadRequest', 
             'message': "Invalid object identifier 'None'.", 
