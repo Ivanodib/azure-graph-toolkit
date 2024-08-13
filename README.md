@@ -58,8 +58,8 @@
 There are many great Azure libraries available on GitHub; however, I didn't find one that really suited my needs, so I created this one to simplify and automate daily sysadmin tasks.
 
 Features:
-* Add user to AAD security group
-* Remove user from AAD security group
+* Add user to AAD group
+* Remove user from AAD group
 * List all user membership groups
 * Reset user password
 * Disable/enable user
@@ -148,17 +148,7 @@ print(result)
  ```
  <br>
 
- **Error handling**<br>
- This library handles exceptions for you. Just verify the presence of the 'error' key in the JSON response: 
-```python
 
-result = graph_utils.remove_user_from_group('mario.rossi@domain.com', 'block-usb-group', access_token)
-
-if 'error' in result:
-  doSomething()
-   
- ```
-<br>
 
   Example Output
  ```python
@@ -179,10 +169,12 @@ if 'error' in result:
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Add orchestrator to change user membership temporarily
-- [ ] Add module to manage user credentials
-- [ ] Add module to manage Entra ID registered devices
-- [ ] Add module to manage Intune MDM joined devices
+- [ ] Add device to group
+- [ ] Remove device from group
+- [ ] List user's owned devices
+- [ ] List devices compliance status
+- [ ] Create and delete user
+- [ ] Create and delete group
 
 <!-- See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues). -->
 
@@ -190,11 +182,12 @@ if 'error' in result:
 
 
 <!-- CONTRIBUTING -->
+<!-->
 ## Contributing
 Any contributions you make are **greatly appreciated**.
 
 <br>
-
+-->
 
 
 <!-- CONTACT -->

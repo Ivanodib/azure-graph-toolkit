@@ -11,19 +11,29 @@ from azure_graph_toolkit.graph_utils import (
 )
 
 def run_generic_http_test(func_to_test, func_args, expected_info: dict, http_method: str, mock_response_json: dict = None, should_raise: bool = False):
+
     """
-    Testa una funzione decorata con handle_http_exceptions che utilizza un metodo HTTP specifico.
+    Runs a generic HTTP test for a function decorated with handle_http_exceptions.
 
     Args:
-        func_to_test (callable): La funzione decorata da testare.
-        func_args (tuple): Argomenti da passare alla funzione di test.
-        expected_error_info (dict): Il dizionario con le informazioni di errore attese.
-        http_method (str): Il metodo HTTP da testare ('get', 'post', 'patch', 'delete').
+        func_to_test (callable): The decorated function to be tested.
+        func_args (tuple): Arguments to pass to the function being tested.
+        expected_info (dict): A dictionary with the expected information or error details.
+        http_method (str): The HTTP method to be tested ('get', 'post', 'patch', 'delete').
+        mock_response_json (dict, optional): A dictionary representing the JSON response to be returned by the mock. Defaults to None.
+        should_raise (bool, optional): If True, the test will simulate an HTTP error and expect an exception. Defaults to False.
+
+    Returns:
+        None: The function asserts the test results and does not return anything.
+
+    Raises:
+        AssertionError: If the actual result does not match the expected information.
     """
+
     # test http exception
     if should_raise:
 
-        # Mock della risposta HTTP e dell'eccezione
+        # mock http response
         mock_response = Mock()
         mock_response.status_code = expected_info["status_code"]
         mock_response.json.return_value = {
@@ -31,41 +41,33 @@ def run_generic_http_test(func_to_test, func_args, expected_info: dict, http_met
             "error_description": expected_info["error_description"]
         }
 
-        # Simulazione di eccezione HTTPError
+        # http exception simulation
         mock_http_error = requests.exceptions.HTTPError(response=mock_response)
 
-        # metodo patch HTTP parametrizzato
+        # patch method parametrized
         patch_target = f'requests.{http_method.lower()}'
 
-        # Patch del metodo HTTP specificato per sollevare l'eccezione simulata
         with patch(patch_target, side_effect=mock_http_error):
             with pytest.raises(decorators.GraphHTTPError) as exc_info:
                 func_to_test(*func_args)
-
-            # Verifica che l'eccezione contenga le informazioni attese
-            print(f'Error: {exc_info.value.args[0]}')
-            print(f'Expected: {expected_info}')
 
             assert exc_info.value.args[0] == expected_info
             
 
     # test success response
     else:
-        # Mock della risposta HTTP di successo
+
         mock_response = Mock()
         mock_response.status_code = 200
 
         if mock_response_json is not None:
             mock_response.json.return_value = mock_response_json
 
-        # Determina quale metodo HTTP patchare
         patch_target = f'requests.{http_method.lower()}'
 
-        # Patch del metodo HTTP specificato per restituire la risposta simulata
         with patch(patch_target, return_value=mock_response):
             result = func_to_test(*func_args)
 
-            # Verifica che il risultato contenga le informazioni attese
             assert result == expected_info
 
 def test_error_get_user_from_upn():
@@ -105,7 +107,6 @@ def test_success_get_user_from_upn():
         'jobTitle':'Developer'
     }
 
-    # Definisci le informazioni attese per il caso di successo
     expected_success_info = {
         'status_code': 200,
         'id': 'user-id',
@@ -113,7 +114,6 @@ def test_success_get_user_from_upn():
         'job_title': 'Developer'
     }
 
-    # Esegui il test generico per il metodo GET, aspettandoti una risposta di successo
     run_generic_http_test(get_user_from_upn, func_args, expected_success_info, 'get', mock_json_response, should_raise=False)
 
 def test_error_get_user_membership_groups():
@@ -196,12 +196,10 @@ def test_error_add_user_to_group():
     with patch('azure_graph_toolkit.graph_utils.get_user_from_upn') as mock_get_user_from_upn, \
          patch('azure_graph_toolkit.graph_utils.get_group_by_name') as mock_get_group_by_name, \
          patch('requests.post') as mock_post:
-
-        # Configurazione dei mock per le chiamate GET come prerequisito della funzione add_user_to_group<
+   
         mock_get_user_from_upn.return_value = {'id': 'user-id'}
         mock_get_group_by_name.return_value = {'group_id': 'group-id', 'group_name': 'fake_group_name'}
 
-        # Simulazione di un errore nella chiamata POST
         mock_response_post = Mock()
         mock_response_post.status_code = 404
         mock_response_post.json.return_value = {
@@ -223,7 +221,6 @@ def test_success_add_user_to_group():
     with patch('azure_graph_toolkit.graph_utils.get_user_from_upn') as mock_get_user_from_upn, \
         patch('azure_graph_toolkit.graph_utils.get_group_by_name') as mock_get_group_by_name:
 
-        # Configurazione dei mock per le chiamate GET come prerequisito della funzione add_user_to_group<
         mock_get_user_from_upn.return_value = {'id': 'user-id'}
         mock_get_group_by_name.return_value = {'group_id': 'group-id', 'group_name': mock_group_name}
 
@@ -245,7 +242,6 @@ def test_error_remove_user_from_group():
     with patch('azure_graph_toolkit.graph_utils.get_user_from_upn') as mock_get_user_from_upn, \
          patch('azure_graph_toolkit.graph_utils.get_user_group_by_name') as mock_get_group_by_name:
 
-        # Configurazione dei mock per le chiamate GET come prerequisito della funzione add_user_to_group<
         mock_get_user_from_upn.return_value = {'status_code':400, 'id': None, 'job_title':'dev'}
         mock_get_group_by_name.return_value = {'group_id': 'group-id', 'group_name': 'Group-A'}
 

@@ -34,7 +34,10 @@ def get_group_by_name(group_name:str, access_token:str) -> dict :
         access_token (str): The Graph API access token.
 
     Returns:
-        dict: A dictionary containings the group id and group name."""
+        dict: A dictionary containings the group id and group name.
+    
+    Raises:
+        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails."""
 
 
     url = f'{config.GRAPH_BASE_URL_GROUP}/'
@@ -96,7 +99,10 @@ def get_user_from_upn (user_upn:str, access_token:str ) -> dict:
         access_token (str): Graph API access token.
 
     Returns:
-        dict: A dictionary containing status_code, id, job_title ."""
+        dict: A dictionary containing status_code, id, job_title .
+
+    Raises:
+        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails."""
 
 
     url = f'{config.GRAPH_BASE_URL_USER}/{user_upn}' 
@@ -129,7 +135,10 @@ def get_user_membership_groups(user_upn:str, access_token:str) -> dict:
         access_token (str): The Graph API access token.
 
     Returns:
-        dict: A dictionary containing all group names and group ids which user is member of.    
+        dict: A dictionary containing all group names and group ids which user is member of.
+    
+    Raises:
+        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails.            
     """    
 
     url = f'{config.GRAPH_BASE_URL_USER}/{user_upn}/memberOf'
@@ -155,7 +164,10 @@ def if_user_member_of(user_upn:str, group_name:str, access_token:str) -> bool:
         access_token (str): The Grah API access token.
 
     Returns:
-        bool: A boolean value ."""
+        bool: A boolean value.
+    
+    Raises:
+        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails."""
     
     response = get_user_membership_groups(user_upn, access_token)
 
@@ -176,7 +188,10 @@ def get_user_group_by_name (user_id:str,group_name:str,access_token:str) -> dict
         access_token (str): The Grah API access token.
 
     Returns:
-        dict: A dictionary containing status code, group id, group name ."""
+        dict: A dictionary containing status code, group id, group name .
+        
+    Raises:
+        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails."""
 
     url = f'{config.GRAPH_BASE_URL_USER}/{user_id}/memberOf/microsoft.graph.group'
 
@@ -220,7 +235,10 @@ def add_user_to_group(user_upn:str, group_name:str, access_token:str) -> dict:
         access_token (str): The Graph API access token.
 
     Returns:
-        dict: A dictionary containing the status code, id, job_title ."""
+        dict: A dictionary containing the status code, id, job_title .
+        
+    Raises:
+        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails.    """
 
     response_user_info = get_user_from_upn(user_upn, access_token)  
     user_id = response_user_info.get('id')
@@ -258,7 +276,10 @@ def remove_user_from_group(user_upn:str, group_name:str, access_token:str) -> di
         access_token (str): The Graph API access token.
 
     Returns:
-        dict: A dictionary containing the status code and graph result  ."""
+        dict: A dictionary containing the status code and graph result  .
+    
+    Raises:
+        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails."""
 
     response_user_info = get_user_from_upn(user_upn, access_token)
     user_id = response_user_info.get('id')
@@ -281,28 +302,35 @@ def remove_user_from_group(user_upn:str, group_name:str, access_token:str) -> di
 
 
 @decorators.handle_http_exceptions
-def user_reset_password(user_upn:str, access_token:str, new_password:str = None, force_change_password_next_signin: bool = False):
+def user_reset_password(user_upn:str, new_password:str, access_token:str, force_change_password_next_signin:bool = False):
 
     # User.ReadWrite.All api permission
     # User Administrator to App service principal.
+    """
+    Resets the user's password.
 
-    response_user_info = get_user_from_upn(user_upn, access_token)  
-    user_id = response_user_info.get('id')
+    Args:
+        user_upn (str): The user's principal name (UPN).
+        new_password (str): The new password to set for the user.
+        access_token (str): The access token for the Graph API.
+        force_change_password_next_signin (bool, optional): If True, the user will be required to change the password at the next sign-in. Defaults to False.
 
-    url = f'{config.GRAPH_BASE_URL_USER}/{user_id}'
+    Returns:
+        dict: A dictionary containing the status code and a message indicating the result of the operation.
+
+     Raises:
+        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails.            
+    """
+
+    url = f'{config.GRAPH_BASE_URL_USER}/{user_upn}'
 
     headers = get_http_header(access_token)
 
-    passwd = ''
-    if new_password is None:
-        passwd = 'generated_pw'
-    else:
-        passwd = new_password
 
     payload = {
         'passwordProfile': {
             'forceChangePasswordNextSignIn': force_change_password_next_signin,
-            'password': f'{passwd}'    
+            'password': f'{new_password}'    
         }
     }
 
@@ -311,7 +339,7 @@ def user_reset_password(user_upn:str, access_token:str, new_password:str = None,
 
     return {
         'status_code':response.status_code,
-        'message': f'Success. User {user_upn} password was reset to {passwd}.'
+        'message': f'Success. User {user_upn} password has been changed.'
     }
 
 
@@ -332,7 +360,37 @@ def user_revoke_sessions(user_upn:str, access_token: str):
     }
 
 
-def user_enable_account(user_upn:str, access_token: str):
-    return
+def user_set_account_status(user_upn:str, enable_account:bool , access_token: str,) -> dict:
 
-#accountEnabled
+    """
+    Sets the user's account status (enabled or disabled).
+
+    Args:
+        user_upn (str): The user's principal name.
+        enable_account (bool): True to enable the account, False to disable it.
+        access_token (str): The access token for the Graph API.
+
+    Returns:
+        dict: A dictionary containing the status code and the result of the operation.
+    
+    Raises:
+        requests.exceptions.HTTPError: If the HTTP request to obtain the token fails.
+    """
+
+    url = f'{config.GRAPH_BASE_URL_USER}/{user_upn}'
+    headers = get_http_header(access_token)
+
+    payload = {
+        'accountEnabled':enable_account
+    }
+
+    response = requests.patch(url, headers=headers, json=payload)
+    response.raise_for_status()
+
+    status_message = "enabled" if enable_account else "disabled"
+
+    return {
+        'status_code':response.status_code,
+        'message': f'Success. User account {user_upn} has been {status_message}.'
+    }
+
