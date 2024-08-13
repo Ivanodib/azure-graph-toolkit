@@ -55,7 +55,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-There are many great Azure libraries available on GitHub; however, I didn't find one that really suited my needs, so I created this one to simplify and automate daily sysadmin tasks.
+There are many great Azure libraries available on GitHub; however, I didn't find one that really suited my needs, so I created this one to simplify and automate daily tasks.
 
 Features:
 * Add user to AAD group
@@ -79,7 +79,7 @@ Features:
 
 ### Prerequisites
 
-1. Python >= 3.4
+1. Python >= 3.8
 2. Azure AD App Registration with the following role assigned *(App delegation)*:
 
 
