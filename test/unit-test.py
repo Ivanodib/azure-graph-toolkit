@@ -22,6 +22,7 @@ def run_generic_http_test(func_to_test, func_args, expected_info: dict, http_met
     """
     # test http exception
     if should_raise:
+
         # Mock della risposta HTTP e dell'eccezione
         mock_response = Mock()
         mock_response.status_code = expected_info["status_code"]
@@ -42,7 +43,11 @@ def run_generic_http_test(func_to_test, func_args, expected_info: dict, http_met
                 func_to_test(*func_args)
 
             # Verifica che l'eccezione contenga le informazioni attese
+            print(f'Error: {exc_info.value.args[0]}')
+            print(f'Expected: {expected_info}')
+
             assert exc_info.value.args[0] == expected_info
+            
 
     # test success response
     else:
@@ -111,7 +116,6 @@ def test_success_get_user_from_upn():
 
     # Esegui il test generico per il metodo GET, aspettandoti una risposta di successo
     run_generic_http_test(get_user_from_upn, func_args, expected_success_info, 'get', mock_json_response, should_raise=False)
-
 
 def test_error_get_user_membership_groups():
     func_args = ("user@example.com", "fake_access_token")
@@ -209,3 +213,29 @@ def test_error_add_user_to_group():
 
 
         run_generic_http_test(add_user_to_group, func_args, expected_error_info, 'post', should_raise=True)
+
+
+def test_error_remove_user_from_group():
+    func_args = ('user@example.com','Group-A','fake_access_token')
+
+
+    with patch('azure_graph_toolkit.graph_utils.get_user_from_upn') as mock_get_user_from_upn, \
+         patch('azure_graph_toolkit.graph_utils.get_user_group_by_name') as mock_get_group_by_name:
+
+        # Configurazione dei mock per le chiamate GET come prerequisito della funzione add_user_to_group<
+        mock_get_user_from_upn.return_value = {'status_code':404, 'id': None, 'job_title':'dev'}
+        mock_get_group_by_name.return_value = {'group_id': 'group-id', 'group_name': 'Group-A'}
+
+
+        expected_error_info = {
+            'status_code': 401,
+            'error': 
+            {'code': 'Request_BadRequest', 
+            'message': "Invalid object identifier 'None'.", 
+            'innerError': 
+            {'date': '2024-08-12T23:30:23', 
+                'request-id': 'xxxxxxxxxxxxxxxx', 
+                'client-request-id': 'yyyyyyyyyyyyyyy'}},
+                'error_description': None
+        }
+        run_generic_http_test(remove_user_from_group, func_args, expected_info=expected_error_info, http_method='delete', should_raise=True)

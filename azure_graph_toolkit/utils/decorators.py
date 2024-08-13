@@ -24,7 +24,6 @@ def handle_http_exceptions(func):
             return func(*args, **kwargs)
         
         except requests.exceptions.HTTPError as http_err:
-            print(http_err)
 
             error_response = {
             "status_code": http_err.response.status_code,
