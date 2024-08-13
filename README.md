@@ -80,7 +80,7 @@ Features:
 ### Prerequisites
 
 1. Python >= 3.8
-2. Azure AD App Registration with the following role assigned *(App delegation)*:
+2. Azure AD App Registration with the following role assigned:
 
 
 | Least privilege role | Delegation type | Description |
