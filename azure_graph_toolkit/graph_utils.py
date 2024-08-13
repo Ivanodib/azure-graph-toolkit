@@ -355,7 +355,7 @@ def user_revoke_sessions(user_upn:str, access_token: str):
         requests.exceptions.HTTPError: If the HTTP request to revoke sessions fails.
     """
 
-    url = f'{config.GRAPH_BASE_URL_USER}/revokeSignInSessions'
+    url = f'{config.GRAPH_BASE_URL_USER}/{user_upn}/revokeSignInSessions'
     headers = get_http_header(access_token)
 
     response = requests.post(url, headers=headers)
