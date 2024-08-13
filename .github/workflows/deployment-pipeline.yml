@@ -27,7 +27,7 @@ jobs:
       with:
         python-version: '3.x'
 
-        
+
     - name: Install dependencies
       run: pip install wheel setuptools --upgrade
 
@@ -39,3 +39,4 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
+        verbose: true
