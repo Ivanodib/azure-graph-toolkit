@@ -170,7 +170,7 @@ print(result)
  
  ```
  ```python
- {'status_code': 404, 'error': 'No AAD group with a name containing \'block-usb-group\' was found. Please try another group name.'}
+ {'status_code': 404, 'message': 'No AAD group with a name containing \'block-usb-group\' was found. Please try another group name.'}
  ```
 
 
