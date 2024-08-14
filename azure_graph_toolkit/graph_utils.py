@@ -264,7 +264,7 @@ def add_user_to_group(user_upn:str, group_name:str, access_token:str) -> dict:
 def remove_user_from_group(user_upn:str, group_name:str, access_token:str) -> dict:
 
     """
-    Adds user to Azure AD group.
+    Removes user from Azure AD group.
 
     Args:
         user_upn (str): The User principal name to find.
@@ -326,7 +326,7 @@ def user_reset_password(user_upn:str, new_password:str, access_token:str, force_
     payload = {
         'passwordProfile': {
             'forceChangePasswordNextSignIn': force_change_password_next_signin,
-            'password': f'{new_password}'    
+            'password': new_password
         }
     }
 
@@ -366,7 +366,7 @@ def user_revoke_sessions(user_upn:str, access_token: str):
         'message': f'Sessions revoked for user {user_upn}.'
     }
 
-
+@decorators.handle_http_exceptions
 def user_set_account_status(user_upn:str, enable_account:bool , access_token: str,) -> dict:
 
     """
