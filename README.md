@@ -59,6 +59,7 @@ There are many great Azure libraries available on GitHub; however, I didn't find
 Features:
 * Add user to AAD group
 * Remove user from AAD group
+* Check if user is member of a group
 * List all user membership groups
 * Reset user password
 * Disable/enable user
