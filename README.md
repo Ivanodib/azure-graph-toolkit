@@ -5,9 +5,19 @@
 
   <h1 align="center">azure-graph-toolkit</h1>
 
+
+<div align="center">
+  
 [![Unit test](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/unittest-pipeline.yml/badge.svg)](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/unittest-pipeline.yml) [![Coverage Status](https://coveralls.io/repos/github/Ivanodib/azure-graph-toolkit/badge.svg)](https://coveralls.io/github/Ivanodib/azure-graph-toolkit)  [![Maintainability](https://api.codeclimate.com/v1/badges/1936009e913846781090/maintainability)](https://codeclimate.com/github/Ivanodib/azure-graph-toolkit/maintainability)  [![Deployment](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/deployment-pipeline.yml/badge.svg)](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/deployment-pipeline.yml) ![PyPI - Version](https://img.shields.io/pypi/v/azure-graph-toolkit) 
 
+</div>
 
+<div align="center">
+  
+[![Downloads](https://static.pepy.tech/badge/azure-graph-toolkit)](https://pepy.tech/project/azure-graph-toolkit)
+[![Downloads](https://static.pepy.tech/badge/azure-graph-toolkit/month)](https://pepy.tech/project/azure-graph-toolkit)
+
+</div>
 
 
   <p align="center">
@@ -57,6 +67,7 @@ There are many great Azure libraries available on GitHub; however, I didn't find
 Features:
 * Add user to AAD group
 * Remove user from AAD group
+* Check if user is member of a group
 * List all user membership groups
 * Reset user password
 * Disable/enable user
@@ -84,7 +95,7 @@ Features:
 | --- | --- | --- |
 | `GroupMember.ReadWrite.All` | Application | To manage user membership groups. |
 | `GroupMember.Read.All` | Application | List all the groups available. |
-| `User.ReadWrite.All` | Application | To change user password. |
+| `User.ReadWrite.All`, `User Administrator role`  | Application | To change user password. |
 | `User.ManageIdentities.All`, `User.EnableDisableAccount.All` | Application | To disable/enable user. |
 | `User.RevokeSessions.All` | Application | To revoke user session tokens. |
 
