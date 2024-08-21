@@ -7,7 +7,9 @@ from azure_graph_toolkit.graph_utils import (
     get_user_membership_groups,
     get_user_group_by_name,
     add_user_to_group,
-    remove_user_from_group
+    remove_user_from_group,
+    user_revoke_sessions,
+    user_set_account_status
 )
 
 def run_generic_http_test(func_to_test, func_args, expected_info: dict, http_method: str, mock_response_json: dict = None, should_raise: bool = False):
@@ -30,45 +32,28 @@ def run_generic_http_test(func_to_test, func_args, expected_info: dict, http_met
         AssertionError: If the actual result does not match the expected information.
     """
 
+    mock_response = Mock()
+    mock_response.json.return_value = mock_response_json
+    patch_target = f'requests.{http_method.lower()}'
+
     # test http exception
     if should_raise:
 
-        # mock http response
-        mock_response = Mock()
-        mock_response.status_code = expected_info["status_code"]
-        mock_response.json.return_value = {
-            "error": expected_info["error"],
-            "error_description": expected_info["error_description"]
-        }
-
-        # http exception simulation
+        mock_response.status_code = expected_info['status_code']
         mock_http_error = requests.exceptions.HTTPError(response=mock_response)
 
-        # patch method parametrized
-        patch_target = f'requests.{http_method.lower()}'
-
         with patch(patch_target, side_effect=mock_http_error):
-            with pytest.raises(decorators.GraphHTTPError) as exc_info:
-                func_to_test(*func_args)
-
-            assert exc_info.value.args[0] == expected_info
+            result = func_to_test(*func_args)
             
 
     # test success response
     else:
-
-        mock_response = Mock()
         mock_response.status_code = 200
-
-        if mock_response_json is not None:
-            mock_response.json.return_value = mock_response_json
-
-        patch_target = f'requests.{http_method.lower()}'
 
         with patch(patch_target, return_value=mock_response):
             result = func_to_test(*func_args)
 
-            assert result == expected_info
+    assert result == expected_info
 
 def test_error_get_user_from_upn():
     func_args = ("user@example.com", "fake_access_token")
@@ -91,7 +76,7 @@ def test_error_get_user_from_upn():
     
     expected_error_info = {
         "status_code": 404,
-        "message": "The user was not found."
+        "message": "Resource 'user@example.com' does not exist or one of its queried reference-property objects are not present."
     }
 
     run_generic_http_test(get_user_from_upn, func_args, expected_error_info, 'get', mock_json_response, should_raise=True)
@@ -116,17 +101,25 @@ def test_success_get_user_from_upn():
     run_generic_http_test(get_user_from_upn, func_args, expected_success_info, 'get', mock_json_response, should_raise=False)
 
 def test_error_get_user_membership_groups():
-    func_args = ("user@example.com", "fake_access_token")
+    mock_user_upn = "user@example.com"
+    
+    func_args = (mock_user_upn, "fake_access_token")
+
     expected_error_info = {
         "status_code": 404,
-        "error": "ResourceNotFound",
-        "error_description": "No AAD groups found for user."
+        "message":f"No AAD groups found for user {mock_user_upn}."
     }
-    run_generic_http_test(get_user_membership_groups, func_args, expected_error_info, 'get', should_raise=True)        
+
+    mock_json_response = {
+        '@odata.count': 0
+    }
+    
+    run_generic_http_test(get_user_membership_groups, func_args, expected_error_info, 'get', mock_json_response, should_raise=False)        
 
 def test_success_get_user_membership_groups():
     func_args = ('user@example.com','fake_access_token')
     mock_response_json = {'@odata.context': 'https://graph.microsoft.com/v1.0/$metadata#directoryObjects',
+                          '@odata.count':2,
                  'value': [
                         {'@odata.type': '#microsoft.graph.group',
                             'id': 'xxxxxxxxxxxxxxxx',
@@ -152,19 +145,19 @@ def test_success_get_user_membership_groups():
     run_generic_http_test(get_user_membership_groups,func_args,expected_info,'get',mock_response_json,should_raise=False)
 
 def test_error_get_user_group_by_name():
-    func_args = ("fake_user_id", "fake_group_name", "fake_access_token")
-    
-    expected_error_info = {'status_code': 400, 
-                            'error': {
-                                'code': 'Request_BadRequest', 
-                                'message': 'Bad request. Please fix the request before retrying.',
-                                'innerError': {
-                                'date': '2024-08-12T15:34:20', 'request-id': 'xxxxxxxxxxxxxx', 'client-request-id': 'yyyyyyyyy'}},
-                                'error_description': None}
-    
 
+    mock_group_name = 'Group-A'
+    func_args = ("fake_user_id", mock_group_name, "fake_access_token")
+    expected_error_info = {
+            'status_code':404,
+            'message':f'No AAD group that contains {mock_group_name} found. Try another name.'
+        }
+    
+    mock_json_response = {
+        '@odata.count': 0
+    }
 
-    run_generic_http_test(get_user_group_by_name, func_args, expected_error_info, 'get', should_raise=True)
+    run_generic_http_test(get_user_group_by_name, func_args, expected_error_info, 'get', mock_json_response,should_raise=False)
 
 def test_success_get_user_group_by_name():
     func_args = ('user-id','Group-A','fake_access_token')
@@ -184,31 +177,30 @@ def test_success_get_user_group_by_name():
     run_generic_http_test(get_user_group_by_name,func_args,expected_info,'get',mock_json_response,should_raise=False)
 
 def test_error_add_user_to_group():
-    func_args = ("user@example.com", "fake_group_name", "fake_access_token")
+
+    mock_user_id = "user-id"
+    mock_group_name = "Group-A"
+    
+    func_args = ("user@example.com", mock_group_name, "fake_access_token")
 
     expected_error_info = {
-        "status_code": 404,
-        "error": "ResourceNotFound",
-        "error_description": "No AAD groups found for user."
+        "status_code": 400,
+        "message":"One or more added object references already exist for the following modified properties: 'members'."
     }
 
-    with patch('azure_graph_toolkit.graph_utils.get_user_from_upn') as mock_get_user_from_upn, \
-         patch('azure_graph_toolkit.graph_utils.get_group_by_name') as mock_get_group_by_name, \
-         patch('requests.post') as mock_post:
-   
-        mock_get_user_from_upn.return_value = {'id': 'user-id'}
-        mock_get_group_by_name.return_value = {'group_id': 'group-id', 'group_name': 'fake_group_name'}
-
-        mock_response_post = Mock()
-        mock_response_post.status_code = 404
-        mock_response_post.json.return_value = {
-            "error": "ResourceNotFound",
-            "error_description": "No AAD groups."
+    mock_json_response = {
+        'error': {'code': 'Request_BadRequest', 'message': "One or more added object references already exist for the following modified properties: 'members'.",
+        'innerError': {'date': '2024-08-21T23:23:06', 'request-id': 'ef95f7c5-17e5-49de-bac2-bf68f6a622c0', 'client-request-id': 'ef95f7c5-17e5-49de-bac2-bf68f6a622c0'}}
         }
-        mock_post.side_effect = requests.exceptions.HTTPError(response=mock_response_post)
+    
 
+    with patch('azure_graph_toolkit.graph_utils.get_user_from_upn') as mock_get_user_from_upn, \
+         patch('azure_graph_toolkit.graph_utils.get_group_by_name') as mock_get_group_by_name:
+   
+        mock_get_user_from_upn.return_value = {'status_code':200, 'id': mock_user_id}
+        mock_get_group_by_name.return_value = {'status_code':200, 'group_id': 'group-id', 'group_name': mock_group_name}
 
-        run_generic_http_test(add_user_to_group, func_args, expected_error_info, 'post', should_raise=True)
+        run_generic_http_test(add_user_to_group, func_args, expected_error_info, 'post', mock_json_response , should_raise=True)
 
 def test_success_add_user_to_group():
     
@@ -220,40 +212,79 @@ def test_success_add_user_to_group():
     with patch('azure_graph_toolkit.graph_utils.get_user_from_upn') as mock_get_user_from_upn, \
         patch('azure_graph_toolkit.graph_utils.get_group_by_name') as mock_get_group_by_name:
 
-        mock_get_user_from_upn.return_value = {'id': 'user-id'}
-        mock_get_group_by_name.return_value = {'group_id': 'group-id', 'group_name': mock_group_name}
+        mock_get_user_from_upn.return_value = {'status_code':200, 'id': 'user-id'}
+        mock_get_group_by_name.return_value = {'status_code':200, 'group_id': 'group-id', 'group_name': mock_group_name}
 
         expected_info = {
         'status_code':200,
-        'message': f'Success. User {mock_user_upn} added to AAD group {mock_group_name}.'
+        'message': f'User {mock_user_upn} added to AAD group {mock_group_name} successfully.'
         }
 
         mock_json_response = {
-        'status_code':204,
+        'status_code':200
         }
 
-        run_generic_http_test(add_user_to_group,func_args,expected_info,'post',mock_json_response)
+        run_generic_http_test(add_user_to_group,func_args,expected_info,'post',mock_json_response, should_raise=False)
 
 def test_error_remove_user_from_group():
+
+    mock_group_name = 'Group-A'
+    mock_user_id = 'user-id'
     func_args = ('user@example.com','Group-A','fake_access_token')
 
 
     with patch('azure_graph_toolkit.graph_utils.get_user_from_upn') as mock_get_user_from_upn, \
-         patch('azure_graph_toolkit.graph_utils.get_user_group_by_name') as mock_get_group_by_name:
+        patch('azure_graph_toolkit.graph_utils.get_group_by_name') as mock_get_group_by_name:
 
-        mock_get_user_from_upn.return_value = {'status_code':400, 'id': None, 'job_title':'dev'}
-        mock_get_group_by_name.return_value = {'group_id': 'group-id', 'group_name': 'Group-A'}
+        mock_get_user_from_upn.return_value = {'status_code':200, 'id': mock_user_id}
+        mock_get_group_by_name.return_value = {'status_code':200, 'group_id': 'group-id', 'group_name': mock_group_name}
 
 
         expected_error_info = {
-            'status_code': 400,
-            'error': 
-            {'code': 'Request_BadRequest', 
-            'message': "Invalid object identifier 'None'.", 
-            'innerError': 
-            {'date': '2024-08-12T23:30:23', 
-                'request-id': 'xxxxxxxxxxxxxxxx', 
-                'client-request-id': 'yyyyyyyyyyyyyyy'}},
-                'error_description': None
+        'status_code': 404,
+        'message': "Resource '29420684-fee0-49e1-b9c5-dbdefd57c48f' does not exist or one of its queried reference-property objects are not present."
         }
-        run_generic_http_test(remove_user_from_group, func_args, expected_info=expected_error_info, http_method='delete', should_raise=True)
+
+
+        mock_json_response = {
+        'error': {'code': 'Request_ResourceNotFound',
+        'message': "Resource '29420684-fee0-49e1-b9c5-dbdefd57c48f' does not exist or one of its queried reference-property objects are not present.",
+        'innerError': {'date': '2010-08-21T00:00:00', 'request-id': 'xxxxxxxxxx', 'client-request-id': 'yyyyyyyyyyyy'}}
+        }
+
+        run_generic_http_test(remove_user_from_group, func_args, expected_error_info, 'delete', mock_json_response , should_raise=True)
+
+def test_success_user_revoke_sessions():
+    mock_user_upn = "user@example.com"
+    
+    func_args = (mock_user_upn,  "fake_access_token")
+
+    expected_info = {
+        'status_code': 200,
+        'message': f'User {mock_user_upn} sessions have been revoked successfully.'
+    }
+
+    mock_json_response = {
+        "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#Edm.Boolean",
+        "value": True
+    }
+
+    run_generic_http_test(user_revoke_sessions, func_args, expected_info,'post', mock_json_response, should_raise=False)
+
+
+def test_success_user_set_account_status():
+    mock_user_upn = "user@example.com"
+    enable_account = True
+    
+    func_args = (mock_user_upn, enable_account,  "fake_access_token")
+
+    expected_info = {
+        'status_code': 200,
+        'message': f'User account {mock_user_upn} has been enabled successfully.'
+    }
+
+    mock_json_response = {
+        
+    }
+
+    run_generic_http_test(user_set_account_status, func_args, expected_info,'patch', mock_json_response, should_raise=False)
