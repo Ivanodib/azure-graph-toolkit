@@ -25,10 +25,17 @@ def handle_http_exceptions(func):
         
         except requests.exceptions.HTTPError as http_err:
 
+            response_json = http_err.response.json()
+
+            #graph "error"
+            message = response_json.get('error', {}).get('message')
+
             error_response = {
             "status_code": http_err.response.status_code,
-            "error": http_err.response.json().get('error'),
-            "error_description": http_err.response.json().get('error_description')
+            "message": message
             }
-            raise GraphHTTPError(error_response) from None
+            
+            return error_response
+            #raise GraphHTTPError(error_response) from None
+
     return wrapper

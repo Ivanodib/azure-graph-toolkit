@@ -53,10 +53,11 @@ def get_group_by_name(group_name:str, access_token:str) -> dict :
     respone_group_info.raise_for_status()
     groups_data = respone_group_info.json()
 
+    # status.code = 200. Exception decorator doesn't work here.
     if groups_data['@odata.count'] == 0:  
         return {
-            'status_code':respone_group_info.status_code,
-            'error':f'No AAD group that contains {group_name} found. Try another name.'
+            'status_code':404,
+            'message':f'No AAD group that contains {group_name} found. Try another name.'
         }
     
     else:
@@ -109,7 +110,11 @@ def get_user_from_upn (user_upn:str, access_token:str ) -> dict:
     headers = get_http_header(access_token)
 
     response = requests.get(url, headers=headers)
+
     response.raise_for_status()
+    if response.status_code != 200:
+        return response
+    
     response_data = response.json()
 
     user_id = response_data.get('id')
@@ -153,7 +158,7 @@ def get_user_membership_groups(user_upn:str, access_token:str) -> dict:
             'groups': parsed_response}
 
 @decorators.handle_http_exceptions
-def if_user_member_of(user_upn:str, group_name:str, access_token:str) -> bool:
+def is_user_member_of(user_upn:str, group_name:str, access_token:str) -> bool:
     """
     Check if user is member of specific AAD group.
 
@@ -206,6 +211,13 @@ def get_user_group_by_name (user_id:str,group_name:str,access_token:str) -> dict
     result.raise_for_status()
     groups_data = result.json()
 
+    if groups_data['@odata.count'] == 0:
+        
+        return {
+            'status_code':404,
+            'message':f'No AAD group that contains {group_name} for user {user_id} found. Try another name.'
+        }
+
     for group in groups_data['value']:
         if group_name in group['displayName']:
             return {
@@ -213,10 +225,6 @@ def get_user_group_by_name (user_id:str,group_name:str,access_token:str) -> dict
                 'group_id':group['id'],
                 'group_name':group['displayName']
             }
-    return {
-        'status_code':404,
-        'error':f'No AAD group that contains {group_name} for user {user_id} found. Try another name.'
-    }
 
 
 @decorators.handle_http_exceptions    
@@ -236,11 +244,16 @@ def add_user_to_group(user_upn:str, group_name:str, access_token:str) -> dict:
     Raises:
         requests.exceptions.HTTPError: If the HTTP request to add user fails.    """
 
-    response_user_info = get_user_from_upn(user_upn, access_token)  
+    response_user_info = get_user_from_upn(user_upn, access_token)
+    if response_user_info.get('status_code') != 200:
+        return response_user_info
+
     user_id = response_user_info.get('id')
 
  
     response_user_group = get_group_by_name(group_name,access_token)
+    if response_user_group.get('status_code') != 200:
+        return response_user_group
 
     group_id = response_user_group.get('group_id')
     group_name = response_user_group.get('group_name')
@@ -278,9 +291,15 @@ def remove_user_from_group(user_upn:str, group_name:str, access_token:str) -> di
         requests.exceptions.HTTPError: If the HTTP request to remove user fails."""
 
     response_user_info = get_user_from_upn(user_upn, access_token)
+
+    if response_user_info.get('status_code') != 200:
+        return response_user_info
     user_id = response_user_info.get('id')
+
    
     response_user_group = get_user_group_by_name(user_id,group_name,access_token)
+    if response_user_group.get('status_code') != 200:
+        return response_user_group
     
     group_id = response_user_group.get('group_id')
     group_name = response_user_group.get('group_name')
@@ -363,7 +382,7 @@ def user_revoke_sessions(user_upn:str, access_token: str):
 
     return {
         'status_code': response.status_code,
-        'message': f'Sessions revoked for user {user_upn}.'
+        'message': f'User {user_upn} sessions have been revoked successfully.'
     }
 
 @decorators.handle_http_exceptions
@@ -398,6 +417,6 @@ def user_set_account_status(user_upn:str, enable_account:bool , access_token: st
 
     return {
         'status_code':response.status_code,
-        'message': f'Success. User account {user_upn} has been {status_message}.'
+        'message': f'User account {user_upn} has been {status_message} successfully.'
     }
 

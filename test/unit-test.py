@@ -91,8 +91,7 @@ def test_error_get_user_from_upn():
     
     expected_error_info = {
         "status_code": 404,
-        "error": "ResourceNotFound",
-        "error_description": "The user was not found."
+        "message": "The user was not found."
     }
 
     run_generic_http_test(get_user_from_upn, func_args, expected_error_info, 'get', mock_json_response, should_raise=True)
