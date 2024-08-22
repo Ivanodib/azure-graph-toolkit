@@ -8,7 +8,7 @@
 
 <div align="center">
   
-[![Unit test](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/unittest-pipeline.yml/badge.svg)](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/unittest-pipeline.yml) [![Coverage Status](https://coveralls.io/repos/github/Ivanodib/azure-graph-toolkit/badge.svg)](https://coveralls.io/github/Ivanodib/azure-graph-toolkit)  [![Maintainability](https://api.codeclimate.com/v1/badges/1936009e913846781090/maintainability)](https://codeclimate.com/github/Ivanodib/azure-graph-toolkit/maintainability)  [![Deployment](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/deployment-pipeline.yml/badge.svg)](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/deployment-pipeline.yml) ![PyPI - Version](https://img.shields.io/pypi/v/azure-graph-toolkit) 
+[![Unit test](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/unittest-pipeline.yml/badge.svg)](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/unittest-pipeline.yml)   [![Maintainability](https://api.codeclimate.com/v1/badges/1936009e913846781090/maintainability)](https://codeclimate.com/github/Ivanodib/azure-graph-toolkit/maintainability)  [![Deployment](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/deployment-pipeline.yml/badge.svg)](https://github.com/Ivanodib/azure-graph-toolkit/actions/workflows/deployment-pipeline.yml) ![PyPI - Version](https://img.shields.io/pypi/v/azure-graph-toolkit) 
 
 </div>
 
