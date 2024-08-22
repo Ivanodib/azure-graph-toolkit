@@ -145,13 +145,19 @@ def get_user_membership_groups(user_upn:str, access_token:str) -> dict:
         requests.exceptions.HTTPError: If the HTTP request to obtain groups fails.            
     """    
 
-    url = f'{config.GRAPH_BASE_URL_USER}/{user_upn}/memberOf'
+    url = f'{config.GRAPH_BASE_URL_USER}/{user_upn}/memberOf/microsoft.graph.group?$count=true&$select=displayName,id'
     header = get_http_header(access_token)
 
     result = requests.get(url,headers=header)
     result.raise_for_status()
     groups_data = result.json()
-    #print(groups_data)
+
+    if groups_data['@odata.count'] == 0:
+        return {
+            'status_code':404,
+            'message': f'No AAD groups found for user {user_upn}.'
+        }
+    
     parsed_response = [{"displayName": group["displayName"], "id": group["id"]} for group in groups_data["value"]]
 
     return {'status_code': result.status_code,
@@ -215,7 +221,7 @@ def get_user_group_by_name (user_id:str,group_name:str,access_token:str) -> dict
         
         return {
             'status_code':404,
-            'message':f'No AAD group that contains {group_name} for user {user_id} found. Try another name.'
+            'message':f'No AAD group that contains {group_name} found. Try another name.'
         }
 
     for group in groups_data['value']:
@@ -270,7 +276,7 @@ def add_user_to_group(user_upn:str, group_name:str, access_token:str) -> dict:
 
     return {
         'status_code':response.status_code,
-        'message': f'Success. User {user_upn} added to AAD group {group_name}.'
+        'message': f'User {user_upn} added to AAD group {group_name} successfully.'
     }
 
 @decorators.handle_http_exceptions
@@ -297,7 +303,8 @@ def remove_user_from_group(user_upn:str, group_name:str, access_token:str) -> di
     user_id = response_user_info.get('id')
 
    
-    response_user_group = get_user_group_by_name(user_id,group_name,access_token)
+    #response_user_group = get_user_group_by_name(user_id,group_name,access_token)
+    response_user_group = get_group_by_name(group_name,access_token)
     if response_user_group.get('status_code') != 200:
         return response_user_group
     
