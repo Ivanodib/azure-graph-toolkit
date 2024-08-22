@@ -75,7 +75,7 @@ def get_group_by_name(group_name:str, access_token:str) -> dict :
         if count_match_name > 1:
             return {
                 'status_code': respone_group_info.status_code,
-                'error':f'Too much AAD group that contains {group_name} found. Try another name.'
+                'message':f'Too much AAD group that contains {group_name} found. Try another name.'
             }
         
 
@@ -84,7 +84,7 @@ def get_group_by_name(group_name:str, access_token:str) -> dict :
         else:
             return {
             'status_code': respone_group_info.status_code,
-            'error':f'No AAD group that contains {group_name} found. Try another name.'
+            'message':f'No AAD group that contains {group_name} found. Try another name.'
         }
 
 
@@ -221,7 +221,7 @@ def get_user_group_by_name (user_id:str,group_name:str,access_token:str) -> dict
         
         return {
             'status_code':404,
-            'message':f'No AAD group that contains {group_name} found. Try another name.'
+            'message':f'No AAD group that contains {group_name} found for the user. Try another name.'
         }
 
     for group in groups_data['value']:
@@ -303,8 +303,8 @@ def remove_user_from_group(user_upn:str, group_name:str, access_token:str) -> di
     user_id = response_user_info.get('id')
 
    
-    #response_user_group = get_user_group_by_name(user_id,group_name,access_token)
-    response_user_group = get_group_by_name(group_name,access_token)
+    response_user_group = get_user_group_by_name(user_id,group_name,access_token)
+    #response_user_group = get_group_by_name(group_name,access_token)
     if response_user_group.get('status_code') != 200:
         return response_user_group
     
