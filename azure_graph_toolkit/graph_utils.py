@@ -319,7 +319,7 @@ def remove_user_from_group(user_upn:str, group_name:str, access_token:str) -> di
 
     return {
         'status_code':response.status_code,
-        'message': f'Success. User {user_upn} removed from AAD group {group_name}.'
+        'message': f'User {user_upn} removed from AAD group {group_name} successfully.'
     }
 
 
