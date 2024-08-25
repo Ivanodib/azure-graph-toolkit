@@ -14,8 +14,9 @@
 
 <div align="center">
   
-[![Downloads](https://static.pepy.tech/badge/azure-graph-toolkit)](https://pepy.tech/project/azure-graph-toolkit)
-[![Downloads](https://static.pepy.tech/badge/azure-graph-toolkit/month)](https://pepy.tech/project/azure-graph-toolkit)
+[![Downloads](https://static.pepy.tech/badge/azure-graph-toolkit)](https://pepy.tech/project/azure-graph-toolkit) 
+[![Downloads](https://static.pepy.tech/badge/azure-graph-toolkit/month)](https://pepy.tech/project/azure-graph-toolkit) 
+[![Downloads](https://static.pepy.tech/badge/azure-graph-toolkit/week)](https://pepy.tech/project/azure-graph-toolkit)
 
 </div>
 
