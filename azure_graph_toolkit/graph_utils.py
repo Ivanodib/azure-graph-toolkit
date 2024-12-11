@@ -427,3 +427,47 @@ def user_set_account_status(user_upn:str, enable_account:bool , access_token: st
         'message': f'User account {user_upn} has been {status_message} successfully.'
     }
 
+@decorators.handle_http_exceptions
+def get_deviceid_from_hostname(device_hostname:str, access_token:str):
+    """
+    Gets AAD devicee Id from hostname.
+
+    Args:
+        device_hostname (str): Device hostname to find Id of.
+        access_token (str): Graph API access token. 
+
+    Returns:
+        dict: device_id (str): AAD Device Id.
+
+    Raises:
+        requests.exceptions.HTTPError: If the HTTP request to obtain the user id fails.
+    """
+
+    url = f'{config.GRAPH_BASE_URL_DEVICES}/'
+
+    params = {
+        '$count': 'true',
+        '$search': f'"displayName:{device_hostname}"',
+        '$select': 'displayName,id'
+    }
+
+    header = get_http_header(access_token)
+
+    respone_device_info = requests.get(url,headers=header, params=params)
+    respone_device_info.raise_for_status()
+    device_data = respone_device_info.json()
+
+    # status.code = 200. Exception decorator doesn't work here.
+    if device_data['@odata.count'] == 0:  
+        return {
+            'status_code':404,
+            'message':f'No AAD device with the hostname {device_hostname} was found.'
+        }
+    else:
+        data = {
+                'status_code':respone_device_info.status_code,
+                'device_id':device_data['id'],
+                'device_hostname':device_data['displayName']
+                }
+        
+        return data

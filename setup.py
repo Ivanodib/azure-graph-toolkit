@@ -8,7 +8,7 @@ setup(
     version="1.1.1",
     author="Ivano Dibenedetto",
     author_email="ivano.dibenedetto7@gmail.com",
-    description="Lightweight python library for easily managing Azure AD (Entra ID) users and groups through the Graph API.",
+    description="Lightweight python library for easily managing Azure AD (Entra ID) users, device and groups through the Graph API.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Ivanodib/azure-graph-toolkit",
